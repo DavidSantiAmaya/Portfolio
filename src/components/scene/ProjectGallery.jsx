@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 import * as THREE from 'three';
 
 import { projects } from '../../data/projects';
+import { usePointerCursor } from './usePointerCursor';
 
 const placements = [
     { position: [-4.2, 2.25, -4.15], rotation: [0, 0.08, 0] },
@@ -56,7 +57,7 @@ function GalleryCard({ index, onSelectProject, project }) {
     const [hovered, setHovered] = useState(false);
     const texture = useProjectTexture(project, index);
     const layout = placements[index];
-    useEffect(() => { document.body.style.cursor = hovered ? 'pointer' : 'auto'; return () => { document.body.style.cursor = 'auto'; }; }, [hovered]);
+    usePointerCursor(hovered);
 
     return <group position={layout.position} rotation={layout.rotation} scale={hovered ? 1.045 : 1}><mesh position={[0, 0, -0.05]}><boxGeometry args={[cardSize[0] + 0.12, cardSize[1] + 0.12, 0.12]} /><meshStandardMaterial color="#4b2e83" metalness={0.05} roughness={0.82} /></mesh><mesh onClick={(event) => { event.stopPropagation(); onSelectProject(project); }} onPointerOut={() => setHovered(false)} onPointerOver={() => setHovered(true)} position={[0, 0, 0.02]}><planeGeometry args={cardSize} /><meshBasicMaterial map={texture} toneMapped={false} /></mesh></group>;
 }

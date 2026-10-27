@@ -8,7 +8,7 @@ export function CameraRig({ activeId, selectedProject }) {
     useEffect(() => {
         const destination = selectedProject
             ? { position: [0, 3.05, 6.15], target: [0, 1.75, -1.05] }
-            : activeId ? sceneInteractions[activeId]?.camera : defaultCamera;
+            : sceneInteractions[activeId]?.camera ?? defaultCamera;
         if (!destination || !controls.current) return;
         controls.current.setLookAt(...destination.position, ...destination.target, true);
     }, [activeId, selectedProject]);

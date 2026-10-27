@@ -1,9 +1,12 @@
 import { useGLTF } from '@react-three/drei';
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
+
+import { usePointerCursor } from './usePointerCursor';
 
 function LoadedModel({ hitArea, onSelect, src, ...transform }) {
     const { scene } = useGLTF(src);
     const [hovered, setHovered] = useState(false);
+    usePointerCursor(hovered && Boolean(onSelect));
     const clone = useMemo(() => {
         const nextScene = scene.clone(true);
         nextScene.traverse((node) => {
@@ -13,11 +16,6 @@ function LoadedModel({ hitArea, onSelect, src, ...transform }) {
         });
         return nextScene;
     }, [scene]);
-
-    useEffect(() => {
-        document.body.style.cursor = hovered && onSelect ? 'pointer' : 'auto';
-        return () => { document.body.style.cursor = 'auto'; };
-    }, [hovered, onSelect]);
 
     // Attach events to imported meshes. The speaker adds a compact, fully
     // invisible proxy because its physical mesh is exceptionally small.

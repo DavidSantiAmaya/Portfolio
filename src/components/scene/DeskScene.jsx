@@ -7,7 +7,9 @@ import { ProjectWorkstation } from './ProjectWorkstation';
 import { StudioFurniture } from './StudioFurniture';
 
 export function DeskScene({ activeId, animationState, music, onSelect, onSelectProject, selectedProject }) {
-    const projectIndex = selectedProject ? projects.findIndex((project) => project.slug === selectedProject.slug) : 0;
+    const projectIndex = selectedProject
+        ? Math.max(projects.findIndex((project) => project.slug === selectedProject.slug), 0)
+        : 0;
     const animated = animationState === 'running';
 
     return (

@@ -1,13 +1,11 @@
 import { Text } from '@react-three/drei';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
+
+import { usePointerCursor } from './usePointerCursor';
 
 function TransportButton({ children, color = '#4b2e83', onPress, position, primary = false }) {
     const [hovered, setHovered] = useState(false);
-
-    useEffect(() => {
-        document.body.style.cursor = hovered ? 'pointer' : 'auto';
-        return () => { document.body.style.cursor = 'auto'; };
-    }, [hovered]);
+    usePointerCursor(hovered);
 
     const radius = primary ? 0.16 : 0.10;
     return <group position={position} onClick={(event) => { event.stopPropagation(); onPress(); }} onPointerOut={() => setHovered(false)} onPointerOver={() => setHovered(true)} scale={hovered ? 1.08 : 1}>
