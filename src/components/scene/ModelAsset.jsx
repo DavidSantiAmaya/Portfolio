@@ -53,4 +53,6 @@ export function ModelAsset({ asset, onSelect }) {
     return asset.src ? <LoadedModel hitArea={asset.hitArea} onSelect={onSelect} src={asset.src} {...transform} /> : <Placeholder type={asset.placeholder} {...transform} />;
 }
 
-['/Desk.gltf', '/Monitor.gltf', '/HUION.gltf', '/Keyboard.gltf', '/JBL.gltf'].forEach((src) => useGLTF.preload(src));
+['Desk.gltf', 'Monitor.gltf', 'HUION.gltf', 'Keyboard.gltf', 'JBL.gltf'].forEach((src) =>
+    useGLTF.preload(`${import.meta.env.BASE_URL}${src}`)
+);
