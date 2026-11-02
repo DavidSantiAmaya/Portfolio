@@ -43,7 +43,8 @@ export const projects = [
             { section: 'Control físico', title: 'Montaje del prototipo 02', alt: 'Fotografía del montaje físico del proyecto, vista 2', src: `${import.meta.env.BASE_URL}pirate-ship-gallery/field-process-02.jpg` },
             { section: 'Control físico', title: 'Montaje del prototipo 03', alt: 'Fotografía del montaje físico del proyecto, vista 3', src: `${import.meta.env.BASE_URL}pirate-ship-gallery/field-process-03.jpg` },
             { section: 'Presentación visual', title: 'Composición del proyecto', alt: 'Composición visual del proyecto Pirate Ship Simulator', src: `${import.meta.env.BASE_URL}pirate-ship-gallery/complete-project-mockup.png` },
-            { section: 'Presentación visual', title: 'Aplicación de la interfaz', alt: 'Mockup de la interfaz del simulador', src: `${import.meta.env.BASE_URL}pirate-ship-gallery/interface-mockup.png` }
+            { section: 'Presentación visual', title: 'Aplicación de la interfaz', alt: 'Mockup de la interfaz del simulador', src: `${import.meta.env.BASE_URL}pirate-ship-gallery/interface-mockup.png` },
+            { section: 'Presentación visual', title: 'Portada del proyecto', alt: 'Portada de Pirate Ship Simulator con el barco navegando en el océano', src: `${import.meta.env.BASE_URL}pirate-ship-cover.jpeg` }
         ],
         repository: 'https://github.com/Alein0/Barco_Simulacion'
     },

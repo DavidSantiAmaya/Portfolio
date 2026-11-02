@@ -37,6 +37,7 @@ export default function Experience() {
         window.history.pushState({}, '', `/projects/${nextProject.slug}`);
         setProject(nextProject);
         setShowPortfolio(true);
+        window.dispatchEvent(new Event('portfolio:navigate'));
     };
     const closeProject = () => {
         window.history.pushState({}, '', '/');
