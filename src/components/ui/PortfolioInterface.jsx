@@ -26,7 +26,7 @@ function ObjectPanel({ interaction, onCloseInteraction, onOpenPortfolio }) {
 }
 
 function About() {
-    return <section className="about-card paper-sheet"><span className="intro-tag">SOBRE MÍ</span><h2>DAVID SANTIAGO<br /><em>AMAYA REYES</em></h2><p>Creativo visual interesado en construir identidades, ilustraciones y experiencias digitales con una mirada cercana, expresiva y experimental.</p><span className="about-stamp">DISEÑO<br />+ 3D<br />+ WEB</span></section>;
+    return <section className="about-card paper-sheet"><span className="intro-tag">SOBRE MÍ</span><h2>DAVID SANTIAGO<br /><em>AMAYA REYES</em></h2><p>Estudiante de Ingeniería Multimedia con formación en diseño gráfico, ilustración y desarrollo web. Apasionado por crear experiencias digitales innovadoras y funcionales. Experiencia en proyectos de branding, diseño de interfaces y desarrollo de aplicaciones web.</p><span className="about-stamp">DISEÑO<br />+ 3D<br />+ WEB</span></section>;
 }
 
 function TraditionalPortfolio({ onCloseProject, onOpenProject, onReturnToScene, project }) {

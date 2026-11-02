@@ -2,6 +2,13 @@
 // The data shape is reused by the 3D cards, paper portfolio and individual URLs.
 export const projects = [
     {
+        slug: 'pirate-ship-simulator',
+        title: 'Pirate Ship Simulator',
+        category: '3D y web',
+        summary: 'Un simulador de barco pirata en 3D con navegación espacial y física realista.',
+        tools: ['Blender', 'Three.js', 'React']
+    },
+    {
         slug: 'identidad-visual',
         title: 'Identidad visual',
         category: 'Branding',
