@@ -6,8 +6,10 @@ import { projects } from './data/projects';
 const project = projects.find(({ slug }) => slug === 'pirate-ship-simulator');
 const galleryImages = project?.gallery ?? [];
 
-function isProjectRoute() {
-    return window.location.pathname.replace(/\/$/, '').endsWith('/projects/pirate-ship-simulator');
+function customProjectRoute() {
+    const path = window.location.pathname.replace(/\/$/, '');
+    const match = path.match(/\/projects\/([^/]+)$/);
+    return ['pirate-ship-simulator', 'gus-estuvo-aqui'].includes(match?.[1]) ? match[1] : null;
 }
 
 function InstagramIcon() {
@@ -22,6 +24,113 @@ function LinkedInIcon() {
     return <svg aria-hidden="true" viewBox="0 0 24 24" className="social-icon" fill="currentColor">
         <path d="M5.2 8.4a2.05 2.05 0 1 0 0-4.1 2.05 2.05 0 0 0 0 4.1ZM3.45 9.9h3.5v10.65h-3.5V9.9Zm5.7 0h3.35v1.45h.05c.47-.89 1.61-1.83 3.31-1.83 3.54 0 4.2 2.33 4.2 5.36v5.67h-3.5v-5.02c0-1.2-.02-2.75-1.68-2.75-1.69 0-1.95 1.31-1.95 2.66v5.11h-3.5V9.9Z" />
     </svg>;
+}
+
+const gusProject = projects.find(({ slug }) => slug === 'gus-estuvo-aqui');
+
+function GusProjectPage({ onReturn }) {
+    const [menuOpen, setMenuOpen] = useState(false);
+    const [activeImage, setActiveImage] = useState(null);
+    const activeIndex = gusProject.gallery.findIndex(({ src }) => src === activeImage?.src);
+    const galleryGroups = useMemo(() => gusProject.gallery.reduce((groups, image) => {
+        groups[image.section] ??= [];
+        groups[image.section].push(image);
+        return groups;
+    }, {}), []);
+
+    useEffect(() => {
+        if (!activeImage) return undefined;
+        const onKeyDown = (event) => {
+            if (event.key === 'Escape') setActiveImage(null);
+            if (event.key === 'ArrowRight') setActiveImage(gusProject.gallery[(activeIndex + 1) % gusProject.gallery.length]);
+            if (event.key === 'ArrowLeft') setActiveImage(gusProject.gallery[(activeIndex - 1 + gusProject.gallery.length) % gusProject.gallery.length]);
+        };
+        window.addEventListener('keydown', onKeyDown);
+        return () => window.removeEventListener('keydown', onKeyDown);
+    }, [activeImage, activeIndex]);
+
+    const goToHome = () => {
+        window.history.pushState({}, '', '/');
+        onReturn();
+    };
+
+    return <main className="gus-page">
+        <style>{gusStyles}</style>
+        <header className="gus-header">
+            <button className="gus-brand" onClick={goToHome} aria-label="Volver al escritorio">
+                <span className="gus-brand-mark">G</span><span>DAVID SANTIAGO<br />AMAYA REYES</span>
+            </button>
+            <button className={`gus-menu-button${menuOpen ? ' open' : ''}`} aria-label={menuOpen ? 'Cerrar menú' : 'Abrir menú'} aria-expanded={menuOpen} onClick={() => setMenuOpen(!menuOpen)}><span /><span /></button>
+            {menuOpen && <nav className="gus-nav" aria-label="Secciones del proyecto">
+                <a href="#relato" onClick={() => setMenuOpen(false)}>Relato</a><a href="#personajes" onClick={() => setMenuOpen(false)}>Personajes</a><a href="#storyboard" onClick={() => setMenuOpen(false)}>Storyboard</a><a href="#galeria-gus" onClick={() => setMenuOpen(false)}>Galería</a>
+            </nav>}
+        </header>
+
+        <section className="gus-hero" id="proyecto-gus">
+            <div className="gus-hero-copy">
+                <p className="gus-eyebrow">CORTOMETRAJE DE ANIMACIÓN 2D <span>·</span> 2025</p>
+                <h1>Gus estuvo<br /><em>aquí.</em></h1>
+                <p className="gus-hero-summary">Capítulo piloto · Ingeniería Multimedia</p>
+                <p className="gus-hero-description">Ciencia ficción, humor ácido y una aventura sobre responsabilidad, tiempo y segundas oportunidades.</p>
+                <a className="gus-link" href="#relato">Entrar en la historia <span aria-hidden="true">↓</span></a>
+            </div>
+            <figure className="gus-cover"><img src={gusProject.cover} alt="Portada de Gus Estuvo Aquí: Gus, Dumbot y Gus del futuro dentro de la nave" /><figcaption>UNIVERSO EXOGÉNESIS · AÑO 2552</figcaption></figure>
+            <span className="gus-hero-number">PILOTO / 01</span>
+        </section>
+
+        <section className="gus-section gus-story" id="relato">
+            <div className="gus-section-heading"><p className="gus-eyebrow">01 / UNIVERSO Y NARRATIVA</p><h2>Una alerta<br /><em>ignorada.</em></h2></div>
+            <div className="gus-story-layout">
+                <article className="gus-paper-note"><span className="gus-note-label">LA PREMISA</span><p>{gusProject.premise}</p><small>{gusProject.genre}</small></article>
+                <div className="gus-story-side"><div><span className="gus-side-label">EL UNIVERSO</span><p>{gusProject.universe}</p></div><div><span className="gus-side-label">EL PUNTO DE PARTIDA</span><p>{gusProject.storyStartingPoint}</p></div></div>
+            </div>
+            <div className="gus-author-line"><span>David Santiago Amaya Reyes</span><span>Estudiante de Ingeniería Multimedia · 2025</span></div>
+        </section>
+
+        <section className="gus-section gus-characters" id="personajes">
+            <div className="gus-section-heading"><p className="gus-eyebrow">02 / DISEÑO Y PERSONALIDAD</p><h2>Personajes<br /><em>del viaje.</em></h2><p className="gus-section-lede">Tres versiones y miradas sobre una misma historia. Las descripciones conservan el material narrativo del proyecto.</p></div>
+            <div className="gus-character-grid">{gusProject.characters.map((character, index) => <article className="gus-character-card" key={character.name}>
+                <div className="gus-character-image"><img src={character.image} alt={`Lámina de diseño de ${character.name}`} loading="lazy" /></div>
+                <div className="gus-character-copy"><span>PERSONAJE / 0{index + 1}</span><h3>{character.name}</h3><h4>{character.role}</h4><p>{character.description}</p></div>
+            </article>)}</div>
+        </section>
+
+        <section className="gus-section gus-process" id="proceso-gus">
+            <div className="gus-section-heading"><p className="gus-eyebrow">03 / DESARROLLO DEL RELATO</p><h2>Del día a día<br /><em>al futuro.</em></h2></div>
+            <div className="gus-beat-list">{gusProject.storyboard.beats.map((beat, index) => <article className="gus-beat" key={beat}><span>{String(index + 1).padStart(2, '0')}</span><p>{beat}</p></article>)}</div>
+            <div className="gus-storyboard-intro"><div><span className="gus-side-label">PLANOS · ENCUADRES · ACCIÓN</span><h3>Storyboard del capítulo piloto</h3><p>{gusProject.storyboard.overview}</p><p>{gusProject.storyboard.shotPlanning}</p></div><img src={`${import.meta.env.BASE_URL}gus-estuvo-aqui/gus-del-futuro-y-storyboard.png`} alt="Diseño de Gus del futuro y encabezado visual del storyboard" loading="lazy" /></div>
+        </section>
+
+        <section className="gus-section gus-animation">
+            <div className="gus-animation-copy"><p className="gus-eyebrow">04 / PROCESO DE ANIMACIÓN</p><h2>Un cuadro<br /><em>a la vez.</em></h2><p>{gusProject.animationProcess}</p><div className="gus-tools"><span>KRITA</span><span>POSES CLAVE</span><span>LÍNEA DE TIEMPO</span></div></div>
+            <img src={`${import.meta.env.BASE_URL}gus-estuvo-aqui/proceso-de-animacion.png`} alt="Proceso de animación 2D en Krita" loading="lazy" />
+        </section>
+
+        <section className="gus-section gus-documents" id="storyboard">
+            <div className="gus-section-heading"><p className="gus-eyebrow">05 / DOCUMENTOS ÍNTEGROS</p><h2>Storyboard<br /><em>y láminas.</em></h2><p className="gus-section-lede">Consulta los PDF completos para recorrer los planos, encuadres, acciones y notas del proceso sin perder ninguna página.</p></div>
+            <div className="gus-document-list">{gusProject.documents.map((document) => <details className="gus-document" key={document.src}>
+                <summary><span>{document.title}</span><b aria-hidden="true">＋</b></summary>
+                <div className="gus-document-actions"><a href={document.src} target="_blank" rel="noopener noreferrer">Abrir PDF en otra pestaña ↗</a><a href={document.src} download>Descargar PDF ↓</a></div>
+                <iframe src={document.src} title={document.title} loading="lazy" />
+            </details>)}</div>
+        </section>
+
+        <section className="gus-section gus-gallery" id="galeria-gus">
+            <div className="gus-section-heading"><p className="gus-eyebrow">06 / ARCHIVO VISUAL</p><h2>Arte del<br /><em>proyecto.</em></h2><p className="gus-section-lede">Explora las láminas de premisa, personajes, storyboard y desarrollo de la animación.</p></div>
+            {Object.entries(galleryGroups).map(([section, images]) => <div className="gus-gallery-group" key={section}><h3>{section}</h3><div className="gus-gallery-grid">{images.map((image) => <button className="gus-gallery-card" key={image.src} onClick={() => setActiveImage(image)} aria-label={`Ampliar: ${image.title}`}>
+                <span><img src={image.src} alt={image.alt} loading="lazy" decoding="async" /></span><b>{image.title}<i aria-hidden="true">↗</i></b>
+            </button>)}</div></div>)}
+        </section>
+
+        <footer className="gus-footer"><div><p className="gus-eyebrow">CORTOMETRAJE 2D · CAPÍTULO PILOTO</p><h2>Gus estuvo<br /><em>aquí.</em></h2></div><button onClick={goToHome}>Volver al escritorio 3D <span aria-hidden="true">↗</span></button></footer>
+
+        {activeImage && <div className="gus-lightbox" role="dialog" aria-modal="true" aria-label={`Vista ampliada: ${activeImage.title}`} onClick={() => setActiveImage(null)}>
+            <button className="gus-lightbox-close" onClick={() => setActiveImage(null)} aria-label="Cerrar imagen">×</button>
+            <button className="gus-lightbox-arrow prev" onClick={(event) => { event.stopPropagation(); setActiveImage(gusProject.gallery[(activeIndex - 1 + gusProject.gallery.length) % gusProject.gallery.length]); }} aria-label="Imagen anterior">‹</button>
+            <figure onClick={(event) => event.stopPropagation()}><img src={activeImage.src} alt={activeImage.alt} /><figcaption>{activeImage.title}</figcaption></figure>
+            <button className="gus-lightbox-arrow next" onClick={(event) => { event.stopPropagation(); setActiveImage(gusProject.gallery[(activeIndex + 1) % gusProject.gallery.length]); }} aria-label="Imagen siguiente">›</button>
+        </div>}
+    </main>;
 }
 
 function PirateShipPage({ onReturn }) {
@@ -162,10 +271,10 @@ function PirateShipPage({ onReturn }) {
 }
 
 export default function App() {
-    const [showProject, setShowProject] = useState(isProjectRoute);
+    const [customSlug, setCustomSlug] = useState(customProjectRoute);
 
     useEffect(() => {
-        const syncRoute = () => setShowProject(isProjectRoute());
+        const syncRoute = () => setCustomSlug(customProjectRoute());
         window.addEventListener('popstate', syncRoute);
         window.addEventListener('portfolio:navigate', syncRoute);
         return () => {
@@ -174,8 +283,25 @@ export default function App() {
         };
     }, []);
 
-    return showProject ? <PirateShipPage onReturn={() => setShowProject(false)} /> : <Experience />;
+    useEffect(() => {
+        document.title = customSlug === 'gus-estuvo-aqui'
+            ? 'Gus Estuvo Aquí — David Santiago Amaya Reyes'
+            : customSlug === 'pirate-ship-simulator'
+                ? 'Pirate Ship Simulator — David Santiago Amaya Reyes'
+                : 'Portafolio — David Santiago Amaya Reyes';
+    }, [customSlug]);
+
+    if (customSlug === 'pirate-ship-simulator') return <PirateShipPage onReturn={() => setCustomSlug(null)} />;
+    if (customSlug === 'gus-estuvo-aqui') return <GusProjectPage onReturn={() => setCustomSlug(null)} />;
+    return <Experience />;
 }
+
+const gusStyles = `
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Kalam:wght@400;700&family=Permanent+Marker&display=swap');
+.gus-page{--paper:#f7f6f1;--ink:#201b2c;--purple:#4b3290;--orange:#ff6938;--blue:#48639a;background-color:var(--paper);background-image:linear-gradient(#4b329012 1px,transparent 1px),linear-gradient(90deg,#4b329012 1px,transparent 1px);background-size:30px 30px;color:var(--ink);font-family:'DM Sans',Arial,sans-serif;min-height:100vh;overflow:hidden}.gus-page *{box-sizing:border-box}.gus-page a{color:inherit}.gus-header{align-items:center;background:#f7f6f1e8;backdrop-filter:blur(10px);display:flex;justify-content:space-between;left:0;padding:16px clamp(20px,6vw,84px);position:sticky;top:0;z-index:15}.gus-brand{align-items:center;background:none;border:0;color:var(--purple);display:flex;font:700 10px/1.25 'DM Sans',sans-serif;gap:10px;letter-spacing:.1em;text-align:left}.gus-brand-mark{align-items:center;background:var(--purple);color:#fff;display:grid;font:32px 'Permanent Marker',cursive;height:43px;place-items:center;transform:rotate(-5deg);width:43px}.gus-menu-button{background:var(--orange);border:2px solid var(--purple);box-shadow:3px 3px 0 var(--purple);display:grid;gap:6px;height:42px;place-content:center;width:48px}.gus-menu-button span{background:var(--purple);height:2px;width:20px}.gus-menu-button.open span:first-child{transform:translateY(4px) rotate(45deg)}.gus-menu-button.open span:last-child{transform:translateY(-4px) rotate(-45deg)}.gus-nav{background:var(--paper);border:2px solid var(--purple);box-shadow:5px 5px 0 var(--orange);display:grid;gap:14px;min-width:190px;padding:22px;position:absolute;right:clamp(20px,6vw,84px);top:68px}.gus-nav a{color:var(--purple);font:700 13px 'Kalam',cursive;text-decoration:none;text-transform:uppercase}.gus-hero{align-items:center;display:grid;gap:4vw;grid-template-columns:1.1fr .9fr;margin:0 auto;max-width:1440px;min-height:calc(100svh - 75px);padding:64px clamp(25px,8vw,115px) 84px;position:relative}.gus-hero:before{background:var(--orange);border:3px solid var(--purple);border-radius:50%;content:'';height:21px;position:absolute;right:10%;top:13%;width:21px}.gus-hero-copy{position:relative;z-index:1}.gus-eyebrow{color:var(--purple);font-size:10px;font-weight:700;letter-spacing:.16em;margin:0 0 15px;text-transform:uppercase}.gus-eyebrow span{color:var(--orange);padding:0 5px}.gus-hero h1,.gus-section-heading h2,.gus-animation h2,.gus-footer h2{color:var(--purple);font:400 clamp(4.2rem,9.5vw,9rem)/.92 'Permanent Marker',cursive;letter-spacing:-.035em;margin:0;text-transform:uppercase}.gus-hero h1 em,.gus-section-heading h2 em,.gus-animation h2 em,.gus-footer h2 em{color:var(--orange);font-style:normal}.gus-hero-summary{color:var(--purple);font:700 17px 'Kalam',cursive;margin:22px 0 4px}.gus-hero-description{color:#514d57;font-size:15px;line-height:1.7;margin:8px 0 25px;max-width:475px}.gus-link{align-items:center;background:var(--purple);box-shadow:4px 4px 0 var(--orange);color:white!important;display:inline-flex;font:700 11px 'DM Sans',sans-serif;gap:24px;letter-spacing:.08em;padding:13px 17px;text-decoration:none;text-transform:uppercase}.gus-link span{color:#ffab87;font-size:16px}.gus-cover{background:#fff;border:2px solid var(--purple);box-shadow:9px 10px 0 var(--orange);margin:0;max-width:470px;padding:10px;position:relative;transform:rotate(1.2deg)}.gus-cover:before{background:#ff69389c;content:'';height:14px;left:37%;position:absolute;top:-8px;transform:rotate(-3deg);width:100px;z-index:1}.gus-cover img{display:block;max-height:76svh;object-fit:contain;width:100%}.gus-cover figcaption{color:var(--purple);font:700 9px 'DM Sans',sans-serif;letter-spacing:.12em;padding:10px 5px 4px;text-align:right}.gus-hero-number{bottom:30px;color:#777181;font:700 9px 'DM Sans',sans-serif;letter-spacing:.2em;position:absolute;right:clamp(25px,8vw,115px)}.gus-section{margin:0 auto;max-width:1340px;padding:110px clamp(25px,8vw,115px);position:relative}.gus-section-heading{margin-bottom:44px;max-width:790px}.gus-section-heading h2,.gus-animation h2{font-size:clamp(3.4rem,6.5vw,6rem)}.gus-section-heading .gus-section-lede{color:#5e5a62;font-size:14px;line-height:1.7;margin:19px 0 0;max-width:560px}.gus-story{padding-top:80px}.gus-story-layout{align-items:start;display:grid;gap:35px;grid-template-columns:1.05fr .95fr}.gus-paper-note{background:#fff;border:1px solid #d1cbd0;clip-path:polygon(0 2%,3% 0,8% 1%,15% 0,21% 1%,29% 0,36% 2%,45% 0,55% 1%,64% 0,74% 2%,84% 0,93% 2%,100% 0,99% 12%,100% 22%,98% 34%,100% 46%,98% 60%,100% 71%,98% 83%,100% 98%,91% 100%,82% 98%,73% 100%,64% 98%,55% 100%,45% 98%,35% 100%,25% 98%,15% 100%,5% 98%,0 100%,2% 87%,0 74%,2% 61%,0 49%,2% 36%,0 24%,2% 12%);padding:clamp(28px,4vw,52px);position:relative}.gus-note-label,.gus-side-label{color:var(--purple);font:400 24px 'Permanent Marker',cursive}.gus-paper-note p{color:#393541;font-size:15px;line-height:1.8;margin:18px 0}.gus-paper-note small{border-left:4px solid var(--orange);color:var(--purple);display:block;font:700 15px/1.55 'Kalam',cursive;padding:6px 0 6px 15px}.gus-story-side{display:grid;gap:27px;padding-top:13px}.gus-story-side>div{border-left:3px solid var(--orange);padding:2px 0 2px 20px}.gus-side-label{font-size:17px}.gus-story-side p{color:#514d57;font-size:14px;line-height:1.75;margin:9px 0 0}.gus-author-line{border-top:1px solid #4b329044;color:#736e7b;display:flex;font-size:10px;font-weight:700;justify-content:space-between;letter-spacing:.08em;margin-top:42px;padding-top:15px;text-transform:uppercase}.gus-characters{background:#eeedf0b8;max-width:none;padding-left:max(25px,calc((100vw - 1110px)/2));padding-right:max(25px,calc((100vw - 1110px)/2))}.gus-character-grid{display:grid;gap:18px;grid-template-columns:repeat(3,minmax(0,1fr))}.gus-character-card{background:#fff;border:2px solid var(--purple);box-shadow:5px 6px 0 #4b329033;min-width:0}.gus-character-image{align-items:center;background-color:#f1f0eb;background-image:linear-gradient(#4b32900d 1px,transparent 1px),linear-gradient(90deg,#4b32900d 1px,transparent 1px);background-size:18px 18px;display:flex;height:250px;justify-content:center;overflow:hidden;padding:8px}.gus-character-image img{height:100%;object-fit:contain;width:100%}.gus-character-copy{padding:22px}.gus-character-copy>span{color:var(--orange);font-size:9px;font-weight:700;letter-spacing:.13em}.gus-character-copy h3{color:var(--purple);font:400 clamp(1.8rem,2.5vw,2.6rem) 'Permanent Marker',cursive;line-height:1;margin:10px 0 5px}.gus-character-copy h4{color:#4d4854;font:700 13px 'Kalam',cursive;margin:0 0 13px}.gus-character-copy p{color:#57535d;font-size:12px;line-height:1.7;margin:0}.gus-process{display:grid;gap:60px;grid-template-columns:.85fr 1.15fr}.gus-process .gus-section-heading{position:sticky;top:105px}.gus-beat-list{border-left:2px solid var(--purple);padding-left:27px}.gus-beat{display:grid;gap:14px;grid-template-columns:36px 1fr;margin:0 0 25px;position:relative}.gus-beat:before{background:var(--orange);border:2px solid var(--purple);border-radius:50%;content:'';height:11px;left:-35px;position:absolute;top:7px;width:11px}.gus-beat>span{color:var(--orange);font:400 19px 'Permanent Marker',cursive}.gus-beat p{color:#514d57;font-size:13px;line-height:1.7;margin:0}.gus-storyboard-intro{align-items:center;background:#fff;border:1px solid #d6d2d6;display:grid;gap:30px;grid-column:1/-1;grid-template-columns:1fr .8fr;margin-top:5px;padding:25px}.gus-storyboard-intro .gus-side-label{font-size:20px}.gus-storyboard-intro h3{color:var(--orange);font:400 27px 'Permanent Marker',cursive;margin:10px 0}.gus-storyboard-intro p{color:#55515c;font-size:13px;line-height:1.7;margin:9px 0}.gus-storyboard-intro img{display:block;max-height:340px;object-fit:contain;width:100%}.gus-animation{align-items:center;background:var(--purple);color:#fff;display:grid;gap:40px;grid-template-columns:.9fr 1.1fr;max-width:none;padding-left:max(25px,calc((100vw - 1110px)/2));padding-right:max(25px,calc((100vw - 1110px)/2))}.gus-animation .gus-eyebrow{color:#ffb18b}.gus-animation h2{color:#fff}.gus-animation h2 em{color:#ff8b5e}.gus-animation-copy>p:not(.gus-eyebrow){color:#eeebf3;font-size:14px;line-height:1.8;margin:20px 0}.gus-animation>img{background:#f8f7f1;border:7px solid white;box-shadow:8px 8px 0 var(--orange);display:block;max-height:590px;object-fit:contain;width:100%}.gus-tools{display:flex;flex-wrap:wrap;gap:8px}.gus-tools span{border:1px solid #ffffff70;color:white;font-size:9px;font-weight:700;letter-spacing:.12em;padding:8px 10px}.gus-documents{padding-bottom:85px}.gus-document-list{display:grid;gap:14px}.gus-document{background:#fff;border:1px solid #c9c4cf}.gus-document summary{align-items:center;color:var(--purple);cursor:pointer;display:flex;font:700 14px 'DM Sans',sans-serif;justify-content:space-between;list-style:none;padding:19px 22px}.gus-document summary::-webkit-details-marker{display:none}.gus-document summary b{color:var(--orange);font-size:22px}.gus-document[open] summary{border-bottom:1px solid #ddd8e1}.gus-document-actions{display:flex;gap:18px;padding:15px 20px}.gus-document-actions a{color:var(--purple);font-size:11px;font-weight:700;text-decoration:underline;text-underline-offset:3px}.gus-document iframe{background:#eceaf0;border:0;display:block;height:min(78vh,850px);width:100%}.gus-gallery{padding-top:80px}.gus-gallery-group{margin:42px 0 0}.gus-gallery-group h3{border-bottom:1px solid #4b329033;color:var(--purple);font:400 21px 'Permanent Marker',cursive;margin:0 0 15px;padding-bottom:9px}.gus-gallery-grid{display:grid;gap:16px;grid-template-columns:repeat(3,minmax(0,1fr))}.gus-gallery-card{background:#fff;border:1px solid #d2ced6;color:var(--purple);cursor:zoom-in;min-width:0;padding:8px;text-align:left;transition:transform .18s,box-shadow .18s}.gus-gallery-card:hover{box-shadow:4px 5px 0 var(--orange);transform:translateY(-3px)}.gus-gallery-card>span{align-items:center;background:#eeedf0;display:flex;height:clamp(180px,22vw,300px);justify-content:center;overflow:hidden}.gus-gallery-card img{height:100%;object-fit:contain;width:100%}.gus-gallery-card>b{align-items:center;display:flex;font:700 11px 'DM Sans',sans-serif;justify-content:space-between;min-height:45px;padding:9px 4px 2px;text-transform:uppercase}.gus-gallery-card i{color:var(--orange);font-size:17px;font-style:normal}.gus-footer{align-items:end;background:var(--purple);color:#fff;display:flex;justify-content:space-between;padding:55px clamp(25px,8vw,115px)}.gus-footer .gus-eyebrow{color:#ffab84}.gus-footer h2{color:#fff;font-size:clamp(3.2rem,6vw,5.7rem)}.gus-footer h2 em{color:#ff8b5e}.gus-footer>button{background:var(--orange);border:2px solid white;box-shadow:4px 4px 0 #17121f;color:var(--purple);cursor:pointer;font-size:11px;font-weight:700;padding:14px 18px;text-transform:uppercase}.gus-footer>button span{font-size:17px;margin-left:8px}.gus-lightbox{align-items:center;background:#17131df2;display:flex;inset:0;justify-content:center;padding:45px 75px;position:fixed;z-index:40}.gus-lightbox figure{margin:0;max-height:100%;max-width:1200px;text-align:center}.gus-lightbox figure img{max-height:calc(100vh - 105px);max-width:100%;object-fit:contain}.gus-lightbox figcaption{color:white;font:700 12px 'DM Sans',sans-serif;letter-spacing:.08em;margin-top:10px;text-transform:uppercase}.gus-lightbox-close,.gus-lightbox-arrow{background:var(--purple);border:1px solid #fff;color:white;cursor:pointer;height:44px;position:absolute;width:44px}.gus-lightbox-close{font-size:30px;right:20px;top:20px}.gus-lightbox-arrow{font-size:32px;top:50%;transform:translateY(-50%)}.gus-lightbox-arrow.prev{left:18px}.gus-lightbox-arrow.next{right:18px}
+@media(max-width:900px){.gus-hero{grid-template-columns:1fr .8fr}.gus-character-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.gus-character-card:last-child{grid-column:1/-1}.gus-process{gap:35px;grid-template-columns:1fr}.gus-process .gus-section-heading{position:static}.gus-storyboard-intro{grid-template-columns:1fr .7fr}}
+@media(max-width:600px){.gus-header{padding:12px 17px}.gus-hero{gap:35px;grid-template-columns:1fr;min-height:auto;padding:60px 22px 75px}.gus-hero h1{font-size:clamp(4rem,17vw,6rem)}.gus-cover{justify-self:center;max-width:400px;width:84%}.gus-cover img{max-height:62vh}.gus-hero-number{bottom:23px;right:23px}.gus-section{padding:75px 22px}.gus-section-heading h2,.gus-animation h2{font-size:clamp(3.5rem,15vw,5rem)}.gus-story-layout{grid-template-columns:1fr}.gus-author-line{flex-direction:column;gap:7px}.gus-character-grid{grid-template-columns:1fr}.gus-character-card:last-child{grid-column:auto}.gus-character-image{height:280px}.gus-storyboard-intro{grid-column:auto;grid-template-columns:1fr;padding:18px}.gus-storyboard-intro img{max-height:270px}.gus-animation{grid-template-columns:1fr;padding:60px 22px}.gus-document-actions{flex-direction:column;gap:10px}.gus-document iframe{height:65vh}.gus-gallery-grid{grid-template-columns:1fr}.gus-gallery-card>span{height:70vw;max-height:380px}.gus-footer{align-items:flex-start;flex-direction:column;gap:28px;padding:40px 22px}.gus-lightbox{padding:45px 12px}.gus-lightbox-arrow.prev{left:6px}.gus-lightbox-arrow.next{right:6px}.gus-lightbox-arrow{height:37px;width:37px}.gus-lightbox figure img{max-height:calc(100vh - 125px)}}
+`;
 
 const pageStyles = `
 @import url('https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=DM+Sans:wght@400;500;600;700&display=swap');
