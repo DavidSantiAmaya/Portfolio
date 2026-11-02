@@ -4,19 +4,18 @@ import * as THREE from 'three';
 import { projects } from '../../data/projects';
 import { usePointerCursor } from './usePointerCursor';
 
-const placements = [
-    { position: [-4.2, 2.25, -4.15], rotation: [0, 0.08, 0] },
-    { position: [-2.1, 2.25, -4.15], rotation: [0, 0.04, 0] },
-    { position: [0, 2.25, -4.15], rotation: [0, 0, 0] },
-    { position: [2.1, 2.25, -4.15], rotation: [0, -0.04, 0] },
-    { position: [4.2, 2.25, -4.15], rotation: [0, -0.08, 0] }
-];
 const palettes = [['#ff6b35', '#4b2e83'], ['#4b2e83', '#ff6b35'], ['#f4b942', '#4b2e83'], ['#ff6b35', '#3a2367'], ['#6f55af', '#ff6b35']];
 const cardSize = [1.72, 2.22];
 
+function getPlacement(index) {
+    const spacing = 2.1;
+    const x = (index - (projects.length - 1) / 2) * spacing;
+    return { position: [x, 2.25, -4.15], rotation: [0, -x * 0.019, 0] };
+}
+
 function useProjectTexture(project, index) {
     const texture = useMemo(() => {
-        const [accent, secondary] = palettes[index];
+        const [accent, secondary] = palettes[index % palettes.length];
         const canvas = document.createElement('canvas');
         canvas.width = 700;
         canvas.height = 900;
@@ -56,7 +55,7 @@ function useProjectTexture(project, index) {
 function GalleryCard({ index, onSelectProject, project }) {
     const [hovered, setHovered] = useState(false);
     const texture = useProjectTexture(project, index);
-    const layout = placements[index];
+    const layout = getPlacement(index);
     usePointerCursor(hovered);
 
     return <group position={layout.position} rotation={layout.rotation} scale={hovered ? 1.045 : 1}><mesh position={[0, 0, -0.05]}><boxGeometry args={[cardSize[0] + 0.12, cardSize[1] + 0.12, 0.12]} /><meshStandardMaterial color="#4b2e83" metalness={0.05} roughness={0.82} /></mesh><mesh onClick={(event) => { event.stopPropagation(); onSelectProject(project); }} onPointerOut={() => setHovered(false)} onPointerOver={() => setHovered(true)} position={[0, 0, 0.02]}><planeGeometry args={cardSize} /><meshBasicMaterial map={texture} toneMapped={false} /></mesh></group>;
