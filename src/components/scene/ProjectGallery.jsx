@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import * as THREE from 'three';
+import { useTexture } from '@react-three/drei';
 
 import { projects } from '../../data/projects';
 import { usePointerCursor } from './usePointerCursor';
@@ -58,7 +59,13 @@ function GalleryCard({ index, onSelectProject, project }) {
     const layout = getPlacement(index);
     usePointerCursor(hovered);
 
-    return <group position={layout.position} rotation={layout.rotation} scale={hovered ? 1.045 : 1}><mesh position={[0, 0, -0.05]}><boxGeometry args={[cardSize[0] + 0.12, cardSize[1] + 0.12, 0.12]} /><meshStandardMaterial color="#4b2e83" metalness={0.05} roughness={0.82} /></mesh><mesh onClick={(event) => { event.stopPropagation(); onSelectProject(project); }} onPointerOut={() => setHovered(false)} onPointerOver={() => setHovered(true)} position={[0, 0, 0.02]}><planeGeometry args={cardSize} /><meshBasicMaterial map={texture} toneMapped={false} /></mesh></group>;
+    return <group position={layout.position} rotation={layout.rotation} scale={hovered ? 1.045 : 1}><mesh position={[0, 0, -0.05]}><boxGeometry args={[cardSize[0] + 0.12, cardSize[1] + 0.12, 0.12]} /><meshStandardMaterial color="#4b2e83" metalness={0.05} roughness={0.82} /></mesh><mesh onClick={(event) => { event.stopPropagation(); onSelectProject(project); }} onPointerOut={() => setHovered(false)} onPointerOver={() => setHovered(true)} position={[0, 0, 0.02]}><planeGeometry args={cardSize} />{project.cover ? <ProjectCoverMaterial cover={project.cover} /> : <meshBasicMaterial map={texture} toneMapped={false} />}</mesh></group>;
+}
+
+function ProjectCoverMaterial({ cover }) {
+    const texture = useTexture(cover);
+    texture.colorSpace = THREE.SRGBColorSpace;
+    return <meshBasicMaterial map={texture} toneMapped={false} />;
 }
 
 export function ProjectGallery({ onSelectProject }) {

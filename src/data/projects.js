@@ -7,21 +7,9 @@ export const projects = [
         category: '3D y web',
         summary: 'Un simulador de barco pirata en 3D con navegación espacial y física realista.',
         tools: ['Blender', 'Three.js', 'React'],
+        cover: `${import.meta.env.BASE_URL}pirate-ship-cover.jpeg`,
         images: [
-            '/Pirate Ship simulator/0001.png',
-            '/Pirate Ship simulator/0004.png',
-            '/Pirate Ship simulator/arduino_morado (1).png',
-            '/Pirate Ship simulator/arduino_naranja.png',
-            '/Pirate Ship simulator/FIGURAS_HD_TRANSPARENTE (1).png',
-            '/Pirate Ship simulator/IMG_2707.HEIC',
-            '/Pirate Ship simulator/IMG_2708.HEIC',
-            '/Pirate Ship simulator/IMG_2709.HEIC',
-            '/Pirate Ship simulator/mockup_con_escritorio_transparente.png',
-            '/Pirate Ship simulator/mockup_minimalista_transparente_final.png',
-            '/Pirate Ship simulator/pngtree-a-vintage-wooden-ship-s-helm-intricately-crafted-with-spokes-and-png-image_17722266.webp',
-            '/Pirate Ship simulator/unity_morado (1).png',
-            '/Pirate Ship simulator/unity_naranja.png',
-            '/Pirate Ship simulator/WhatsApp Image 2026-05-26 at 1.33.37 PM.jpeg'
+            `${import.meta.env.BASE_URL}pirate-ship-cover.jpeg`
         ],
         aporte: [
             'Physical simulation in Unity',
