@@ -1,4 +1,5 @@
 import { sceneInteractions } from '../../config/sceneInteractions';
+import SocialLinks from './SocialLinks';
 import { projects } from '../../data/projects';
 
 function Doodles() {
@@ -78,6 +79,7 @@ function ProjectCaseStudy({ onCloseProject, project }) {
 
         {project.repository && <section className="case-repository"><div><span className="section-eyebrow">CÓDIGO Y DOCUMENTACIÓN</span><h2>Explora el proyecto</h2></div><a href={project.repository} target="_blank" rel="noopener noreferrer">Ver repositorio <span aria-hidden="true">↗</span></a></section>}
         <div className="detail-footer"><div><h2>Herramientas</h2><ul>{project.tools.map((tool) => <li key={tool}>{tool}</li>)}</ul></div><span className="detail-doodle">*</span></div>
+        <SocialLinks className="social-actions detail-social" />
     </article>;
 }
 
