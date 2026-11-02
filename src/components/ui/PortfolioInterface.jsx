@@ -29,8 +29,60 @@ function About() {
     return <section className="about-card paper-sheet"><span className="intro-tag">SOBRE MÍ</span><h2>DAVID SANTIAGO<br /><em>AMAYA REYES</em></h2><p>Estudiante de Ingeniería Multimedia con formación en diseño gráfico, ilustración y desarrollo web. Apasionado por crear experiencias digitales innovadoras y funcionales. Experiencia en proyectos de branding, diseño de interfaces y desarrollo de aplicaciones web.</p><span className="about-stamp">DISEÑO<br />+ 3D<br />+ WEB</span></section>;
 }
 
+function ProjectCaseStudy({ onCloseProject, project }) {
+    const gallerySections = project.gallery?.reduce((sections, image) => {
+        sections[image.section] ??= [];
+        sections[image.section].push(image);
+        return sections;
+    }, {});
+
+    return <article className="project-detail paper-sheet">
+        <div className="case-topline"><span className="detail-sticker">CASO DE ESTUDIO</span><span>{project.year || 'PORTAFOLIO'}</span></div>
+        <button className="text-button back-button" onClick={onCloseProject}>&lt;- Todos los proyectos</button>
+        <p className="case-category">{project.category}</p>
+        <h1>{project.title}</h1>
+        <p className="summary">{project.summary}</p>
+        <div className="case-meta">
+            <div><span>Autor</span><strong>{project.author || 'David Santiago Amaya Reyes'}</strong></div>
+            <div><span>Perfil</span><strong>{project.role || 'Diseño y desarrollo multimedia'}</strong></div>
+            <div><span>Año</span><strong>{project.year || '2026'}</strong></div>
+        </div>
+
+        {project.cover && <figure className="project-cover-figure">
+            <img fetchPriority="high" src={project.cover} alt={`Portada de ${project.title}: barco pirata en el mar`} />
+            <figcaption>PORTADA DEL PROYECTO</figcaption>
+        </figure>}
+
+        {(project.concept || project.objective) && <section className="case-concept">
+            <div><span className="section-eyebrow">01 / IDEA</span><h2>Concepto</h2><p>{project.concept}</p></div>
+            <div><span className="section-eyebrow">02 / PROPÓSITO</span><h2>Objetivo</h2><p>{project.objective}</p></div>
+        </section>}
+
+        {project.contributions?.length > 0 && <section className="case-contributions">
+            <div className="case-section-heading"><span className="section-eyebrow">03 / PROCESO</span><h2>Mi aporte</h2></div>
+            <div className="contribution-grid">{project.contributions.map((item) => <article className="contribution-card" key={item.number}>
+                <span>{item.number}</span><h3>{item.title}</h3><p>{item.description}</p>
+            </article>)}</div>
+        </section>}
+
+        {gallerySections && <section className="case-gallery">
+            <div className="case-section-heading"><span className="section-eyebrow">04 / REGISTRO VISUAL</span><h2>Del prototipo al proyecto</h2><p>Simulación, modelado y pruebas del control físico.</p></div>
+            {Object.entries(gallerySections).map(([section, images]) => <div className="gallery-group" key={section}>
+                <h3>{section}</h3>
+                <div className="project-images">{images.map((image, index) => <figure className="project-image-card" key={image.src}>
+                    <img loading="lazy" decoding="async" src={image.src} alt={image.alt} />
+                    <figcaption><span>{String(index + 1).padStart(2, '0')}</span>{image.title}</figcaption>
+                </figure>)}</div>
+            </div>)}
+        </section>}
+
+        {project.repository && <section className="case-repository"><div><span className="section-eyebrow">CÓDIGO Y DOCUMENTACIÓN</span><h2>Explora el proyecto</h2></div><a href={project.repository} target="_blank" rel="noopener noreferrer">Ver repositorio <span aria-hidden="true">↗</span></a></section>}
+        <div className="detail-footer"><div><h2>Herramientas</h2><ul>{project.tools.map((tool) => <li key={tool}>{tool}</li>)}</ul></div><span className="detail-doodle">*</span></div>
+    </article>;
+}
+
 function TraditionalPortfolio({ onCloseProject, onOpenProject, onReturnToScene, project }) {
-    return <div className="traditional-portfolio"><Doodles /><header className="portfolio-header"><button className="wordmark" onClick={onReturnToScene}><i>D</i>avid Santiago Amaya Reyes</button><button className="text-button" onClick={onReturnToScene}>Volver al escritorio</button></header>{project ? <article className="project-detail paper-sheet"><span className="detail-sticker">CASO DE ESTUDIO</span><button className="text-button back-button" onClick={onCloseProject}>&lt;- Todos los proyectos</button><p>{project.category}</p><h1>{project.title}</h1><p className="summary">{project.summary}</p>{project.cover && <figure className="project-cover-figure"><img src={project.cover} alt={`Portada de ${project.title}: barco pirata en el mar`} /><figcaption>PORTADA DEL PROYECTO</figcaption></figure>}{project.images?.length > (project.cover ? 1 : 0) && <div className="project-images">{project.images.filter((image) => image !== project.cover).map((image, index) => (<img key={index} src={image} alt={`Imagen complementaria ${index + 1} de ${project.title}`} />))}</div>}<div className="project-aporte"><h2>Mi aporte</h2><ul>{project.aporte && project.aporte.map((item, index) => (<li key={index}>{item}</li>))}</ul></div><div className="project-repository"><a href={project.repository} target="_blank" rel="noopener noreferrer">Repositorio</a></div>{!project.cover && <div className="project-visual"><span>DAVID<br />SANTIAGO</span><b>Proceso, bocetos y resultado final.</b></div>}<div className="detail-footer"><div><h2>Herramientas</h2><ul>{project.tools.map((tool) => <li key={tool}>{tool}</li>)}</ul></div><span className="detail-doodle">*</span></div></article> : <><section className="portfolio-intro paper-sheet"><span className="intro-tag">PORTAFOLIO 2026</span><p>HOLA, SOY DAVID</p><h1>Ideas que<br /><em>hacen ruido.</em></h1><span>Diseño, ilustración, 3D y experiencias digitales hechas con intención, curiosidad y mucho marcador.</span><div className="intro-scribble">CREAR<br />SIN MIEDO</div></section><About /><ProjectList onOpenProject={onOpenProject} /></>}</div>;
+    return <div className="traditional-portfolio"><Doodles /><header className="portfolio-header"><button className="wordmark" onClick={onReturnToScene}><i>D</i>avid Santiago Amaya Reyes</button><button className="text-button" onClick={onReturnToScene}>Volver al escritorio</button></header>{project ? <ProjectCaseStudy onCloseProject={onCloseProject} project={project} /> : <><section className="portfolio-intro paper-sheet"><span className="intro-tag">PORTAFOLIO 2026</span><p>HOLA, SOY DAVID</p><h1>Ideas que<br /><em>hacen ruido.</em></h1><span>Diseño, ilustración, 3D y experiencias digitales hechas con intención, curiosidad y mucho marcador.</span><div className="intro-scribble">CREAR<br />SIN MIEDO</div></section><About /><ProjectList onOpenProject={onOpenProject} /></>}</div>;
 }
 
 export function PortfolioInterface({ activeId, onClearSceneProject, onCloseInteraction, onCloseProject, onOpenPortfolio, onOpenProject, onReturnToScene, project, sceneProject, showPortfolio }) {

@@ -1,6 +1,6 @@
+import { useTexture } from '@react-three/drei';
 import { useEffect, useMemo, useState } from 'react';
 import * as THREE from 'three';
-import { useTexture } from '@react-three/drei';
 
 import { projects } from '../../data/projects';
 import { usePointerCursor } from './usePointerCursor';
