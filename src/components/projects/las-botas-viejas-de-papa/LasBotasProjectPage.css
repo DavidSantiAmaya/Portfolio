@@ -1,0 +1,160 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Kalam:wght@400;700&family=Permanent+Marker&display=swap');
+
+.botas-page {
+    --botas-paper: #f8f7f1;
+    --botas-ink: #292431;
+    --botas-purple: #4b3290;
+    --botas-coral: #ff6938;
+    --botas-green: #477c36;
+    background-color: var(--botas-paper);
+    background-image: linear-gradient(#4b329012 1px, transparent 1px), linear-gradient(90deg, #4b329012 1px, transparent 1px), linear-gradient(90deg, transparent 0 66px, #e8879e60 67px 68px, transparent 69px);
+    background-size: 30px 30px, 30px 30px, 100% 100%;
+    color: var(--botas-ink);
+    font-family: 'DM Sans', Arial, sans-serif;
+    min-height: 100vh;
+    overflow: hidden;
+}
+.botas-page *, .botas-page *::before, .botas-page *::after { box-sizing: border-box; }
+.botas-page button, .botas-page a { font: inherit; }
+.botas-page a { color: inherit; }
+.botas-header { align-items: center; backdrop-filter: blur(10px); background: #f8f7f1e8; display: flex; justify-content: space-between; padding: 14px clamp(20px, 6vw, 84px); position: sticky; top: 0; z-index: 15; }
+.botas-wordmark { align-items: center; background: none; border: 0; color: var(--botas-purple); display: flex; font-size: 10px!important; font-weight: 700!important; gap: 10px; letter-spacing: .1em; }
+.botas-wordmark span { align-items: center; background: var(--botas-purple); color: white; display: grid; font: 23px 'Permanent Marker', cursive; height: 42px; place-items: center; transform: rotate(-5deg); width: 42px; }
+.botas-menu { background: var(--botas-paper); border: 2px solid var(--botas-purple); box-shadow: 3px 3px 0 var(--botas-coral); display: grid; gap: 6px; height: 42px; place-content: center; width: 48px; }
+.botas-menu i { background: var(--botas-purple); height: 2px; width: 20px; }
+.botas-menu-panel { background: var(--botas-paper); border: 2px solid var(--botas-purple); box-shadow: 5px 5px 0 var(--botas-coral); display: grid; gap: 13px; min-width: 210px; padding: 20px; position: absolute; right: clamp(20px, 6vw, 84px); top: 65px; }
+.botas-menu-panel a { color: var(--botas-purple); font: 700 14px 'Kalam', cursive; text-decoration: none; text-transform: uppercase; }
+.botas-hero { align-items: center; display: grid; gap: 4vw; grid-template-columns: 1.1fr .9fr; margin: auto; max-width: 1440px; min-height: calc(100svh - 70px); padding: 60px clamp(25px, 8vw, 115px) 90px; position: relative; }
+.botas-hero-copy { position: relative; z-index: 1; }
+.botas-eyebrow { color: var(--botas-purple); font-size: 10px; font-weight: 700; letter-spacing: .15em; line-height: 1.6; margin: 0 0 16px; text-transform: uppercase; }
+.botas-eyebrow span { background: var(--botas-green); color: #fff; display: inline-block; padding: 4px 8px; transform: rotate(-2deg); }
+.botas-hero h1, .botas-section-title h2, .botas-result h2, .botas-footer h2 { color: var(--botas-purple); font: 400 clamp(3.8rem, 8.5vw, 7.8rem)/.93 'Permanent Marker', cursive; letter-spacing: -.035em; margin: 0; text-transform: uppercase; }
+.botas-hero h1 em, .botas-section-title h2 em, .botas-result h2 em, .botas-footer h2 em { color: var(--botas-coral); font-style: normal; }
+.botas-subtitle { color: var(--botas-purple); font: 700 18px 'Kalam', cursive; margin: 23px 0 8px; }
+.botas-hero-description { color: #514d57; font-size: 15px; line-height: 1.75; margin: 8px 0 20px; max-width: 490px; }
+.botas-school { border-left: 4px solid var(--botas-green); display: grid; gap: 4px; margin: 21px 0; padding-left: 14px; }
+.botas-school b { color: var(--botas-purple); font-size: 12px; letter-spacing: .07em; text-transform: uppercase; }
+.botas-school span { font: 700 14px 'Kalam', cursive; }
+.botas-school small { color: #625e68; font-size: 10px; line-height: 1.5; max-width: 380px; }
+.botas-button { align-items: center; background: var(--botas-green); border: 2px solid var(--botas-purple); box-shadow: 4px 4px 0 var(--botas-coral); color: #fff!important; display: inline-flex; font-size: 11px!important; font-weight: 700!important; gap: 23px; letter-spacing: .07em; padding: 13px 16px; text-decoration: none; text-transform: uppercase; }
+.botas-button span { font-size: 17px; }
+.botas-cover { background: #fff; border: 2px solid var(--botas-purple); box-shadow: 9px 10px 0 var(--botas-coral); margin: 0; max-width: 580px; padding: 9px; position: relative; transform: rotate(.8deg); }
+.botas-cover::before { background: #477c3680; content: ''; height: 14px; left: 35%; position: absolute; top: -8px; transform: rotate(-3deg); width: 100px; z-index: 1; }
+.botas-cover img { display: block; height: auto; object-fit: contain; width: 100%; }
+.botas-cover figcaption { color: var(--botas-purple); font-size: 9px; font-weight: 700; letter-spacing: .1em; padding: 10px 4px 3px; text-align: right; }
+.botas-hero-note { bottom: 31px; color: var(--botas-green); font: 700 10px 'Kalam', cursive; letter-spacing: .14em; position: absolute; right: clamp(25px, 8vw, 115px); transform: rotate(-3deg); }
+.botas-section { margin: auto; max-width: 1320px; padding: 100px clamp(25px, 8vw, 112px); position: relative; scroll-margin-top: 75px; }
+.botas-section-title { margin-bottom: 42px; max-width: 760px; }
+.botas-section-title h2, .botas-result h2 { font-size: clamp(3.2rem, 6.3vw, 5.7rem); }
+.botas-section-title > p:last-child { color: #5c5862; font-size: 14px; line-height: 1.7; margin: 17px 0 0; max-width: 610px; }
+.botas-about { padding-top: 75px; }
+.botas-about-grid { align-items: start; display: grid; gap: 36px; grid-template-columns: 1.05fr .95fr; }
+.botas-torn-paper { background: #fff; clip-path: polygon(0 2%,4% 0,11% 1%,18% 0,27% 2%,36% 0,44% 1%,54% 0,63% 2%,72% 0,82% 1%,92% 0,100% 2%,99% 15%,100% 27%,98% 41%,100% 54%,98% 68%,100% 81%,98% 98%,88% 100%,77% 98%,67% 100%,57% 98%,46% 100%,35% 98%,24% 100%,13% 98%,2% 100%,0 87%,2% 75%,0 61%,2% 48%,0 35%,2% 22%); padding: clamp(28px, 4vw, 48px); }
+.botas-torn-paper > span, .botas-contribution > span { color: var(--botas-green); font: 700 13px 'Kalam', cursive; letter-spacing: .1em; }
+.botas-torn-paper p { color: #403b48; font-size: 14px; line-height: 1.8; margin: 15px 0; }
+.botas-about-copy { border-left: 3px solid var(--botas-green); padding: 4px 0 4px 21px; }
+.botas-about-copy h3 { color: var(--botas-purple); font: 700 23px 'Kalam', cursive; margin: 0 0 10px; }
+.botas-about-copy p { color: #514d57; font-size: 14px; line-height: 1.8; margin: 0 0 14px; }
+.botas-award { color: var(--botas-purple); font-size: 10px; font-weight: 700; letter-spacing: .13em; margin-top: 22px; }
+.botas-award b { color: var(--botas-green); display: block; font: 400 27px 'Permanent Marker', cursive; letter-spacing: .02em; margin-top: 3px; }
+.botas-role { background: #eeedf0b8; max-width: none; padding-left: max(25px, calc((100vw - 1096px)/2)); padding-right: max(25px, calc((100vw - 1096px)/2)); }
+.botas-role-card { background: #fff; border: 2px solid var(--botas-purple); box-shadow: 6px 7px 0 #4b329033; padding: clamp(24px, 4vw, 45px); }
+.botas-role-tag { background: var(--botas-green); color: #fff; display: inline-block; font-size: 10px; font-weight: 700; letter-spacing: .12em; padding: 9px 13px; transform: rotate(-1deg); }
+.botas-role-card > p { color: #494551; font-size: 15px; line-height: 1.85; margin: 25px 0; max-width: 900px; }
+.botas-contribution { border-left: 4px solid var(--botas-green); display: grid; gap: 7px; padding: 8px 0 8px 16px; }
+.botas-contribution b { color: var(--botas-purple); font: 700 16px/1.55 'Kalam', cursive; }
+.botas-process { display: grid; gap: 45px; grid-template-columns: .85fr 1.15fr; }
+.botas-process .botas-section-title { align-self: start; position: sticky; top: 100px; }
+.botas-timeline { border-left: 2px solid var(--botas-purple); list-style: none; margin: 4px 0 0; padding: 0 0 0 29px; }
+.botas-timeline li { align-items: center; display: flex; gap: 17px; margin: 0 0 24px; position: relative; }
+.botas-timeline li::before { background: var(--botas-green); border: 2px solid var(--botas-purple); border-radius: 50%; content: ''; height: 13px; left: -37px; position: absolute; width: 13px; }
+.botas-timeline li span { color: var(--botas-green); font-size: 10px; font-weight: 700; letter-spacing: .12em; }
+.botas-timeline li b { color: var(--botas-purple); font: 700 clamp(20px, 3vw, 30px) 'Kalam', cursive; text-transform: uppercase; }
+.botas-lineart { display: grid; gap: 26px 50px; grid-template-columns: .9fr 1.1fr; }
+.botas-lineart .botas-section-title { margin: 0; }
+.botas-lineart-details { display: grid; gap: 16px; }
+.botas-lineart-details article { background: #fff; border-left: 4px solid var(--botas-green); padding: 20px 23px; }
+.botas-lineart-details article > span { color: var(--botas-coral); font-size: 10px; font-weight: 700; }
+.botas-lineart-details h3 { color: var(--botas-purple); font: 700 21px 'Kalam', cursive; margin: 7px 0; }
+.botas-lineart-details p { color: #514d57; font-size: 13px; line-height: 1.7; margin: 0; }
+.botas-comparison { background: #fff; border: 2px solid var(--botas-purple); box-shadow: 6px 7px 0 #477c3630; grid-column: 1/-1; margin: 0; padding: 9px; }
+.botas-comparison img { display: block; max-height: 560px; object-fit: contain; width: 100%; }
+.botas-comparison figcaption { align-items: center; color: var(--botas-purple); display: flex; font-size: 10px; font-weight: 700; gap: 15px; justify-content: center; letter-spacing: .13em; padding: 12px 0 3px; }
+.botas-comparison figcaption i { color: var(--botas-green); font-size: 17px; font-style: normal; }
+.botas-gallery-section { padding-bottom: 115px; }
+.botas-gallery-group { margin-top: 44px; }
+.botas-gallery-group h3 { align-items: center; border-bottom: 1px solid #4b329033; color: var(--botas-purple); display: flex; font: 700 23px 'Kalam', cursive; justify-content: space-between; margin: 0 0 18px; padding-bottom: 9px; }
+.botas-gallery-group h3 i { color: var(--botas-green); font-size: 20px; font-style: normal; }
+.botas-gallery-grid { display: grid; gap: 17px; grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.botas-photo { background: #fff; border: 1px solid #d5d0d8; box-shadow: 4px 5px 0 #4b329022; color: var(--botas-purple); cursor: zoom-in; min-width: 0; padding: 9px; text-align: left; transition: transform .2s, box-shadow .2s; }
+.botas-photo:hover { box-shadow: 6px 7px 0 #477c3650; transform: translateY(-4px) rotate(-.5deg); }
+.botas-photo-image { align-items: center; background-color: #f2f0eb; background-image: linear-gradient(#4b329011 1px, transparent 1px), linear-gradient(90deg, #4b329011 1px, transparent 1px); background-size: 18px 18px; display: flex; height: clamp(170px, 22vw, 275px); justify-content: center; overflow: hidden; }
+.botas-photo-image img { height: 100%; object-fit: contain; width: 100%; }
+.botas-photo-caption { align-items: center; display: flex; font: 700 11px 'Kalam', cursive; gap: 8px; min-height: 42px; padding: 7px 3px 0; }
+.botas-photo-caption b { color: var(--botas-green); font: 700 9px 'DM Sans', sans-serif; }
+.botas-photo-caption i { color: var(--botas-coral); font: normal 17px 'DM Sans', sans-serif; margin-left: auto; }
+.botas-result { align-items: center; background: #eeedf0b8; display: grid; gap: 40px; grid-template-columns: 1fr .8fr; max-width: none; padding-left: max(25px, calc((100vw - 1096px)/2)); padding-right: max(25px, calc((100vw - 1096px)/2)); }
+.botas-result-copy > p:not(.botas-eyebrow) { color: #514d57; font-size: 15px; line-height: 1.8; margin: 18px 0 23px; max-width: 530px; }
+.botas-result-copy .botas-button { margin-top: 20px; }
+.botas-final-image { background: #fff; border: 2px solid var(--botas-purple); box-shadow: 7px 8px 0 var(--botas-green); margin: 0; padding: 9px; transform: rotate(1deg); }
+.botas-final-image img { display: block; max-height: 440px; object-fit: contain; width: 100%; }
+.botas-final-image figcaption { color: var(--botas-purple); font-size: 9px; font-weight: 700; letter-spacing: .13em; padding: 9px 4px 2px; text-align: right; }
+.botas-credits { display: grid; gap: 20px 60px; grid-template-columns: .8fr 1.2fr; }
+.botas-credits .botas-section-title { grid-row: span 2; }
+.botas-team { columns: 2; column-gap: 35px; list-style: none; margin: 0; padding: 0; }
+.botas-team li { break-inside: avoid; border-bottom: 1px solid #4b329022; color: #514d57; font-size: 11px; line-height: 1.5; padding: 9px 0; }
+.botas-institution-note { align-self: end; border-left: 4px solid var(--botas-green); color: var(--botas-purple); display: grid; gap: 7px; padding: 7px 0 7px 14px; }
+.botas-institution-note span { font-size: 9px; font-weight: 700; letter-spacing: .12em; }
+.botas-institution-note b { font: 700 17px/1.4 'Kalam', cursive; }
+.botas-footer { align-items: end; background: var(--botas-purple); color: #fff; display: flex; justify-content: space-between; padding: 55px clamp(25px, 8vw, 112px) 65px; position: relative; }
+.botas-footer::after { background: repeating-linear-gradient(170deg, var(--botas-green) 0 8px, #5d913f 8px 15px, #f8f7f1 15px 18px); bottom: 0; content: ''; height: 13px; left: 0; position: absolute; right: 0; }
+.botas-footer .botas-eyebrow { color: #c9edb9; }
+.botas-footer h2 { color: #fff; font-size: clamp(3rem, 6vw, 5.3rem); }
+.botas-footer h2 em { color: #ff9974; }
+.botas-socials { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 27px; }
+.botas-socials a { align-items: center; background: var(--botas-green); border: 1px solid #fff; color: #fff; display: inline-flex; font-size: 11px; font-weight: 700; gap: 9px; justify-content: center; min-height: 48px; min-width: 145px; padding: 0 15px; text-decoration: none; text-transform: uppercase; }
+.botas-socials a:hover { background: var(--botas-coral); color: var(--botas-purple); }
+.botas-socials a span { font-size: 15px; font-weight: 700; }
+.botas-return { background: var(--botas-green); border: 2px solid #fff; box-shadow: 4px 4px 0 #211a2c; color: #fff; cursor: pointer; font-size: 10px!important; font-weight: 700!important; letter-spacing: .08em; padding: 13px 16px; text-transform: uppercase; }
+.botas-return span { margin-left: 8px; }
+.botas-lightbox { align-items: center; background: #17131df2; display: flex; inset: 0; justify-content: center; padding: 45px 75px; position: fixed; z-index: 40; }
+.botas-lightbox figure { margin: 0; max-height: 100%; max-width: 1200px; text-align: center; }
+.botas-lightbox figure img { max-height: calc(100vh - 105px); max-width: 100%; object-fit: contain; }
+.botas-lightbox figcaption { color: white; font-size: 12px; font-weight: 700; letter-spacing: .08em; margin-top: 10px; text-transform: uppercase; }
+.botas-lightbox-close, .botas-lightbox-arrow { background: var(--botas-purple); border: 1px solid #fff; color: white; cursor: pointer; height: 44px; position: absolute; width: 44px; }
+.botas-lightbox-close { font-size: 30px!important; right: 20px; top: 20px; }
+.botas-lightbox-arrow { font-size: 32px!important; top: 50%; transform: translateY(-50%); }
+.botas-lightbox-arrow.prev { left: 18px; }
+.botas-lightbox-arrow.next { right: 18px; }
+
+@media (max-width: 900px) {
+    .botas-hero { grid-template-columns: 1fr .85fr; }
+    .botas-process { grid-template-columns: 1fr; }
+    .botas-process .botas-section-title { position: static; }
+    .botas-credits { gap: 20px 30px; grid-template-columns: 1fr; }
+    .botas-credits .botas-section-title { grid-row: auto; }
+}
+@media (max-width: 620px) {
+    .botas-page { background-image: linear-gradient(#4b329012 1px, transparent 1px), linear-gradient(90deg, #4b329012 1px, transparent 1px); }
+    .botas-header { padding: 11px 17px; }
+    .botas-wordmark { font-size: 9px!important; }
+    .botas-hero { gap: 34px; grid-template-columns: 1fr; min-height: auto; padding: 52px 22px 75px; }
+    .botas-hero h1 { font-size: clamp(3.6rem, 16vw, 5.4rem); }
+    .botas-cover { justify-self: center; max-width: 500px; width: 100%; }
+    .botas-hero-note { bottom: 25px; right: 24px; }
+    .botas-section { padding: 75px 22px; }
+    .botas-section-title h2, .botas-result h2 { font-size: clamp(3rem, 14vw, 4.7rem); }
+    .botas-about-grid, .botas-lineart, .botas-result { grid-template-columns: 1fr; }
+    .botas-lineart-details { grid-column: auto; }
+    .botas-comparison { grid-column: auto; }
+    .botas-gallery-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .botas-photo-image { height: 42vw; min-height: 140px; }
+    .botas-team { columns: 1; }
+    .botas-footer { align-items: flex-start; flex-direction: column; gap: 27px; padding: 42px 22px 58px; }
+    .botas-socials { width: 100%; }
+    .botas-socials a { flex: 1 1 130px; }
+    .botas-lightbox { padding: 45px 10px; }
+    .botas-lightbox-arrow.prev { left: 6px; }
+    .botas-lightbox-arrow.next { right: 6px; }
+    .botas-lightbox figure img { max-height: calc(100vh - 120px); }
+}
