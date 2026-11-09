@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import { sceneInteractions } from '../../config/sceneInteractions';
 import SocialLinks from './SocialLinks';
 import { projects } from '../../data/projects';
@@ -31,7 +32,59 @@ function About() {
     return <section className="about-card paper-sheet"><span className="intro-tag">SOBRE MÍ</span><h2>DAVID SANTIAGO<br /><em>AMAYA REYES</em></h2><p>Estudiante de Ingeniería Multimedia con formación en diseño gráfico, ilustración y desarrollo web. Apasionado por crear experiencias digitales innovadoras y funcionales. Experiencia en proyectos de branding, diseño de interfaces y desarrollo de aplicaciones web.</p><span className="about-stamp">DISEÑO<br />+ 3D<br />+ WEB</span></section>;
 }
 
-function ProjectCaseStudy({ onCloseProject, project }) {
+function BattleProjectCaseStudy({ onCloseProject, onReturnToScene, project }) {
+    const [activeImage, setActiveImage] = useState(null);
+    const imageIndex = project.gallery.findIndex(({ src }) => src === activeImage?.src);
+    useEffect(() => {
+        if (!activeImage) return undefined;
+        const onKeyDown = (event) => {
+            if (event.key === 'Escape') setActiveImage(null);
+            if (event.key === 'ArrowRight') setActiveImage(project.gallery[(imageIndex + 1) % project.gallery.length]);
+            if (event.key === 'ArrowLeft') setActiveImage(project.gallery[(imageIndex - 1 + project.gallery.length) % project.gallery.length]);
+        };
+        window.addEventListener('keydown', onKeyDown);
+        return () => window.removeEventListener('keydown', onKeyDown);
+    }, [activeImage, imageIndex, project.gallery]);
+
+    const groups = project.gallery.reduce((result, image) => {
+        (result[image.section] ??= []).push(image);
+        return result;
+    }, {});
+
+    return <main className="battle-project-page">
+        <header className="battle-header"><button className="battle-brand" onClick={onReturnToScene}><b>03</b> DAVID SANTIAGO AMAYA REYES</button><button className="battle-back" onClick={onCloseProject}>Todos los proyectos <span>↗</span></button></header>
+        <section className="battle-hero" id="battle-start">
+            <img src={project.cover} alt="Ilustración monocromática de la Batalla del Pantano de Vargas" />
+            <div className="battle-hero-shade" />
+            <div className="battle-hero-copy"><p>PROYECTO MULTIMEDIA <i>—</i> PORTAFOLIO 2026</p><h1>Narrativa web<br /><em>interactiva.</em></h1><span>{project.summary}</span><a href="#battle-about">Descubrir el proyecto <b>↓</b></a></div>
+            <span className="battle-hero-index">03 <i /> 06</span>
+        </section>
+        <div className="battle-paper-flow">
+            <section className="battle-section" id="battle-about">
+                <div className="battle-heading"><p>01 / EL PROYECTO</p><h2>Memoria que<br /><em>se recorre.</em></h2></div>
+                <div className="battle-about-grid"><p>{project.concept}</p><p>{project.objective}</p></div>
+                <div className="battle-fact-strip"><span>25 JULIO 1819</span><i /> <span>PAIPA, BOYACÁ</span><i /> <span>HISTORIA Y CULTURA</span></div>
+            </section>
+            <section className="battle-section battle-process" id="battle-process">
+                <div className="battle-heading"><p>02 / DISEÑO Y DESARROLLO</p><h2>Una experiencia<br /><em>por capítulos.</em></h2></div>
+                <div className="battle-contributions">{project.contributions.map((item) => <article key={item.number}><span>{item.number}</span><h3>{item.title}</h3><p>{item.description}</p></article>)}</div>
+            </section>
+            <section className="battle-section battle-gallery" id="battle-gallery">
+                <div className="battle-heading"><p>03 / GALERÍA</p><h2>Historia en<br /><em>imágenes.</em></h2><span>Escenas, navegación y proceso de desarrollo.</span></div>
+                {Object.entries(groups).map(([group, images]) => <div className="battle-gallery-group" key={group}><h3>{group}</h3><div className="battle-gallery-grid">{images.map((image, index) => <button className="battle-photo" key={image.src} onClick={() => setActiveImage(image)} aria-label={`Ampliar imagen: ${image.title}`}><span><img src={image.src} alt={image.alt} loading="lazy" /></span><b><i>0{index + 1}</i>{image.title}<em>↗</em></b></button>)}</div></div>)}
+            </section>
+            <section className="battle-closing">
+                <div><p>04 / PUBLICACIÓN Y AUTORÍA</p><h2>Del archivo<br />a la experiencia.</h2><span>David Santiago Amaya Reyes · Estudiante de Ingeniería Multimedia</span><small>Investigación histórica, diseño de contenidos, ilustración y desarrollo frontend.</small><div className="battle-tech">{project.tools.map((tool) => <b key={tool}>{tool}</b>)}</div></div>
+                <div className="battle-links">{project.liveUrl && <a href={project.liveUrl} target="_blank" rel="noopener noreferrer">Visitar experiencia <span>↗</span></a>}{project.repository && <a href={project.repository} target="_blank" rel="noopener noreferrer">Ver repositorio <span>↗</span></a>}</div>
+            </section>
+            <footer className="battle-footer"><span>BATALLA DEL PANTANO DE VARGAS · NARRATIVA WEB INTERACTIVA</span><SocialLinks className="detail-social" /></footer>
+        </div>
+        {activeImage && <div className="battle-lightbox" role="dialog" aria-modal="true" aria-label={activeImage.title} onClick={() => setActiveImage(null)}><button aria-label="Cerrar imagen" onClick={() => setActiveImage(null)}>×</button><figure onClick={(event) => event.stopPropagation()}><img src={activeImage.src} alt={activeImage.alt} /><figcaption>{activeImage.title}</figcaption></figure><button className="battle-lightbox-prev" aria-label="Imagen anterior" onClick={(event) => { event.stopPropagation(); setActiveImage(project.gallery[(imageIndex - 1 + project.gallery.length) % project.gallery.length]); }}>‹</button><button className="battle-lightbox-next" aria-label="Imagen siguiente" onClick={(event) => { event.stopPropagation(); setActiveImage(project.gallery[(imageIndex + 1) % project.gallery.length]); }}>›</button></div>}
+    </main>;
+}
+
+function ProjectCaseStudy({ onCloseProject, onReturnToScene, project }) {
+    if (project.slug === 'batalla-pantano-de-vargas') return <BattleProjectCaseStudy onCloseProject={onCloseProject} onReturnToScene={onReturnToScene} project={project} />;
     const gallerySections = project.gallery?.reduce((sections, image) => {
         sections[image.section] ??= [];
         sections[image.section].push(image);
@@ -85,6 +138,7 @@ function ProjectCaseStudy({ onCloseProject, project }) {
 }
 
 function TraditionalPortfolio({ onCloseProject, onOpenProject, onReturnToScene, project }) {
+    if (project?.slug === 'batalla-pantano-de-vargas') return <BattleProjectCaseStudy onCloseProject={onCloseProject} onReturnToScene={onReturnToScene} project={project} />;
     return <div className="traditional-portfolio"><Doodles /><header className="portfolio-header"><button className="wordmark" onClick={onReturnToScene}><i>D</i>avid Santiago Amaya Reyes</button><button className="text-button" onClick={onReturnToScene}>Volver al escritorio</button></header>{project ? <ProjectCaseStudy onCloseProject={onCloseProject} project={project} /> : <><section className="portfolio-intro paper-sheet"><span className="intro-tag">PORTAFOLIO 2026</span><p>HOLA, SOY DAVID</p><h1>Ideas que<br /><em>hacen ruido.</em></h1><span>Diseño, ilustración, 3D y experiencias digitales hechas con intención, curiosidad y mucho marcador.</span><div className="intro-scribble">CREAR<br />SIN MIEDO</div></section><About /><ProjectList onOpenProject={onOpenProject} /></>}</div>;
 }
 
