@@ -52,11 +52,36 @@ export const projects = [
     },
     lasBotasProjectCard,
     {
-        slug: 'atlas-ilustrado',
-        title: 'Atlas ilustrado',
-        category: 'Ilustración',
-        summary: 'Serie editorial de personajes, color y mundos dibujados desde el boceto.',
-        tools: ['Procreate', 'Photoshop', 'Illustrator']
+        slug: 'batalla-pantano-de-vargas',
+        title: 'Batalla del Pantano de Vargas',
+        fullTitle: 'Narrativa Web Interactiva para Divulgar la Historia de la Batalla del Pantano de Vargas, Paipa',
+        category: 'Narrativa web interactiva',
+        summary: 'Narrativa interactiva que divulga la Batalla del Pantano de Vargas mediante investigación, texto, ilustración y navegación por capítulos.',
+        author: 'David Santiago Amaya Reyes',
+        role: 'Estudiante de Ingeniería Multimedia · Investigación histórica, diseño de contenidos, ilustración y desarrollo frontend',
+        year: 'Portafolio 2026',
+        concept: 'Una narrativa web interactiva que acerca al público a la Batalla del Pantano de Vargas, librada el 25 de julio de 1819 en Paipa, Boyacá.',
+        objective: 'Divulgar su valor histórico y cultural mediante una experiencia digital que combina investigación, texto, ilustración y navegación por capítulos.',
+        cover: `${import.meta.env.BASE_URL}batalla-pantano-vargas/portada.png`,
+        coverContain: true,
+        tools: ['React', 'TypeScript', 'Visual Studio Code'],
+        contributions: [
+            { number: '01', title: 'Dirección visual', description: 'La interfaz combina una estética editorial con escenas históricas monocromáticas. El blanco y negro mantiene el tono documental; el morado y el naranja sirven como acentos para destacar títulos, navegación y llamadas a la acción.' },
+            { number: '02', title: 'Experiencia de navegación', description: 'El recorrido vertical organiza el relato por momentos: contexto, cruce del río, batalla, protagonistas y memoria del monumento. Las ilustraciones y escenas 3D ayudan a marcar cambios de tiempo y lugar.' },
+            { number: '03', title: 'Estructura narrativa', description: 'Las secciones guían al usuario por la batalla, la línea temporal, los personajes y el contexto histórico.' },
+            { number: '04', title: 'Desarrollo frontend', description: 'La interfaz se construyó con React y TypeScript, trabajando el código en Visual Studio Code.' }
+        ],
+        gallery: [
+            { section: 'Experiencia web', title: 'Portada · Batalla del Pantano de Vargas', alt: 'Portada monocromática de la Batalla del Pantano de Vargas', src: `${import.meta.env.BASE_URL}batalla-pantano-vargas/portada.png` },
+            { section: 'Experiencia web', title: 'Escena narrativa por capítulos', alt: 'Escena ilustrada monocromática de soldados durante la batalla', src: `${import.meta.env.BASE_URL}batalla-pantano-vargas/escena-capitulos.png` },
+            { section: 'Diseño y navegación', title: 'Experiencia en pantalla', alt: 'Vista de la experiencia narrativa web en pantalla', src: `${import.meta.env.BASE_URL}batalla-pantano-vargas/experiencia-escritorio.png` },
+            { section: 'Diseño y navegación', title: 'Navegación en móvil', alt: 'Vista móvil de la narrativa web histórica', src: `${import.meta.env.BASE_URL}batalla-pantano-vargas/experiencia-movil.png` },
+            { section: 'Investigación y desarrollo', title: 'Investigación histórica', alt: 'Ilustración histórica de planificación y estudio de la batalla', src: `${import.meta.env.BASE_URL}batalla-pantano-vargas/investigacion.png` },
+            { section: 'Investigación y desarrollo', title: 'Desarrollo frontend', alt: 'Código del proyecto en Visual Studio Code', src: `${import.meta.env.BASE_URL}batalla-pantano-vargas/desarrollo.png` },
+            { section: 'Memoria del monumento', title: 'Memoria del monumento', alt: 'Escultura conmemorativa de la Batalla del Pantano de Vargas', src: `${import.meta.env.BASE_URL}batalla-pantano-vargas/monumento.png` }
+        ],
+        repository: 'https://github.com/DavidSantiAmaya/Semillero-de-Investigacion',
+        liveUrl: 'https://davidsantiamaya.github.io/Semillero-de-Investigacion/'
     },
     {
         slug: 'gus-estuvo-aqui',

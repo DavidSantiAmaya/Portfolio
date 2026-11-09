@@ -1,6 +1,7 @@
 import { sceneInteractions } from '../../config/sceneInteractions';
 import SocialLinks from './SocialLinks';
 import { projects } from '../../data/projects';
+import './project-three.css';
 
 function Doodles() {
     return <div aria-hidden="true" className="doodles">
@@ -37,11 +38,11 @@ function ProjectCaseStudy({ onCloseProject, project }) {
         return sections;
     }, {});
 
-    return <article className="project-detail paper-sheet">
+    return <article className={`project-detail paper-sheet${project.slug === 'batalla-pantano-de-vargas' ? ' project-detail-battle' : ''}`}>
         <div className="case-topline"><span className="detail-sticker">CASO DE ESTUDIO</span><span>{project.year || 'PORTAFOLIO'}</span></div>
         <button className="text-button back-button" onClick={onCloseProject}>&lt;- Todos los proyectos</button>
         <p className="case-category">{project.category}</p>
-        <h1>{project.title}</h1>
+        <h1>{project.fullTitle || project.title}</h1>
         <p className="summary">{project.summary}</p>
         <div className="case-meta">
             <div><span>Autor</span><strong>{project.author || 'David Santiago Amaya Reyes'}</strong></div>
@@ -50,7 +51,7 @@ function ProjectCaseStudy({ onCloseProject, project }) {
         </div>
 
         {project.cover && <figure className="project-cover-figure">
-            <img fetchPriority="high" src={project.cover} alt={`Portada de ${project.title}: barco pirata en el mar`} />
+            <img fetchPriority="high" src={project.cover} alt={`Portada de ${project.title}`} />
             <figcaption>PORTADA DEL PROYECTO</figcaption>
         </figure>}
 
@@ -67,7 +68,7 @@ function ProjectCaseStudy({ onCloseProject, project }) {
         </section>}
 
         {gallerySections && <section className="case-gallery">
-            <div className="case-section-heading"><span className="section-eyebrow">04 / REGISTRO VISUAL</span><h2>Del prototipo al proyecto</h2><p>Simulación, modelado y pruebas del control físico.</p></div>
+            <div className="case-section-heading"><span className="section-eyebrow">04 / REGISTRO VISUAL</span><h2>{project.slug === 'batalla-pantano-de-vargas' ? 'Historia en imágenes' : 'Del prototipo al proyecto'}</h2><p>{project.slug === 'batalla-pantano-de-vargas' ? 'Escenas históricas, capítulos y vistas de la experiencia digital.' : 'Simulación, modelado y pruebas del control físico.'}</p></div>
             {Object.entries(gallerySections).map(([section, images]) => <div className="gallery-group" key={section}>
                 <h3>{section}</h3>
                 <div className="project-images">{images.map((image, index) => <figure className="project-image-card" key={image.src}>
@@ -77,7 +78,7 @@ function ProjectCaseStudy({ onCloseProject, project }) {
             </div>)}
         </section>}
 
-        {project.repository && <section className="case-repository"><div><span className="section-eyebrow">CÓDIGO Y DOCUMENTACIÓN</span><h2>Explora el proyecto</h2></div><a href={project.repository} target="_blank" rel="noopener noreferrer">Ver repositorio <span aria-hidden="true">↗</span></a></section>}
+        {(project.repository || project.liveUrl) && <section className="case-repository"><div><span className="section-eyebrow">CÓDIGO Y EXPERIENCIA</span><h2>Explora el proyecto</h2></div>{project.liveUrl && <a href={project.liveUrl} target="_blank" rel="noopener noreferrer">Visitar experiencia <span aria-hidden="true">↗</span></a>}{project.repository && <a href={project.repository} target="_blank" rel="noopener noreferrer">Ver repositorio <span aria-hidden="true">↗</span></a>}</section>}
         <div className="detail-footer"><div><h2>Herramientas</h2><ul>{project.tools.map((tool) => <li key={tool}>{tool}</li>)}</ul></div><span className="detail-doodle">*</span></div>
         <SocialLinks className="social-actions detail-social" />
     </article>;

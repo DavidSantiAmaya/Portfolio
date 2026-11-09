@@ -1,0 +1,33 @@
+/* Isolated styling for the replacement Project 03. */
+.project-detail-battle {
+    --battle-ink: #171717;
+    --battle-paper: #f7f7f4;
+    --battle-purple: #7041c7;
+    --battle-orange: #ff6b35;
+    background-color: var(--battle-paper);
+    background-image: linear-gradient(#1111110a 1px, transparent 1px), linear-gradient(90deg, #1111110a 1px, transparent 1px);
+    background-size: 24px 24px;
+    color: var(--battle-ink);
+}
+.project-detail-battle .detail-sticker,
+.project-detail-battle .section-eyebrow,
+.project-detail-battle .case-category,
+.project-detail-battle .case-section-heading h2 { color: var(--battle-purple); }
+.project-detail-battle .case-contributions { border-top-color: var(--battle-ink); }
+.project-detail-battle .contribution-card { background: #fff; border-color: #222; box-shadow: 4px 4px 0 #222; }
+.project-detail-battle .contribution-card > span { color: var(--battle-orange); }
+.project-detail-battle .project-image-card { background: #fff; border: 1px solid #222; box-shadow: 4px 4px 0 #222; }
+.project-detail-battle .project-cover-figure { background: #fff; border-color: #222; }
+.project-detail-battle .case-repository a { background: var(--battle-ink); border-color: var(--battle-ink); color: #fff; }
+.project-detail-battle .case-repository a:hover { background: var(--battle-purple); border-color: var(--battle-purple); }
+.project-detail-battle .detail-footer { border-top-color: var(--battle-ink); }
+.project-detail-battle .detail-doodle { color: var(--battle-orange); }
+
+.project-card-3 { background: #f8f8f5 !important; border-color: #1b1b1b !important; box-shadow: 6px 6px 0 #1b1b1b !important; color: #171717 !important; }
+.project-card-3 .card-index { color: #7041c7 !important; }
+.project-card-3 > p { color: #7041c7 !important; }
+.project-card-3 h3 { color: #171717 !important; }
+.project-card-3 .project-card-cover { background: #eee; object-fit: contain; }
+.project-card-3 > button { background: #171717 !important; border-color: #171717 !important; color: #fff !important; }
+.project-card-3 > button:hover { background: #7041c7 !important; border-color: #7041c7 !important; }
+@media (max-width: 700px) { .project-detail-battle > h1 { font-size: clamp(2.1rem, 11vw, 3.4rem); line-height: 1.04; } }
