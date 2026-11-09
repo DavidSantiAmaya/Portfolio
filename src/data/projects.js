@@ -1,5 +1,7 @@
 // Replace the copy and images below with David's final project information.
 // The data shape is reused by the 3D cards, paper portfolio and individual URLs.
+import { lasBotasProjectCard } from './lasBotasProject';
+
 export const projects = [
     {
         slug: 'pirate-ship-simulator',
@@ -48,13 +50,7 @@ export const projects = [
         ],
         repository: 'https://github.com/Alein0/Barco_Simulacion'
     },
-    {
-        slug: 'identidad-visual',
-        title: 'Identidad visual',
-        category: 'Branding',
-        summary: 'Sistema gráfico, tono visual y piezas de comunicación para una marca con carácter.',
-        tools: ['Dirección de arte', 'Illustrator', 'Photoshop']
-    },
+    lasBotasProjectCard,
     {
         slug: 'atlas-ilustrado',
         title: 'Atlas ilustrado',

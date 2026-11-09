@@ -5,7 +5,6 @@ import ReactDOM from 'react-dom/client';
 
 import App from './App.jsx';
 import LasBotasProjectPage from './components/projects/las-botas-viejas-de-papa/LasBotasProjectPage';
-import ProjectCardInjection from './components/projects/las-botas-viejas-de-papa/ProjectCardInjection';
 
 function Root() {
     const isLasBotasRoute = () => window.location.pathname.replace(/\/$/, '').endsWith('/projects/las-botas-viejas-de-papa');
@@ -30,7 +29,7 @@ function Root() {
         setShowLasBotas(false);
     };
 
-    return showLasBotas ? <LasBotasProjectPage onReturn={returnToPortfolio} /> : <><App /><ProjectCardInjection /></>;
+    return showLasBotas ? <LasBotasProjectPage onReturn={returnToPortfolio} /> : <App />;
 }
 
 ReactDOM.createRoot(document.querySelector('#root')).render(<Root />);

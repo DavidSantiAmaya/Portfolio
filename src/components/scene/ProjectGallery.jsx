@@ -59,13 +59,35 @@ function GalleryCard({ index, onSelectProject, project }) {
     const layout = getPlacement(index);
     usePointerCursor(hovered);
 
-    return <group position={layout.position} rotation={layout.rotation} scale={hovered ? 1.045 : 1}><mesh position={[0, 0, -0.05]}><boxGeometry args={[cardSize[0] + 0.12, cardSize[1] + 0.12, 0.12]} /><meshStandardMaterial color="#4b2e83" metalness={0.05} roughness={0.82} /></mesh><mesh onClick={(event) => { event.stopPropagation(); onSelectProject(project); }} onPointerOut={() => setHovered(false)} onPointerOver={() => setHovered(true)} position={[0, 0, 0.02]}><planeGeometry args={cardSize} />{project.cover ? <ProjectCoverMaterial cover={project.cover} /> : <meshBasicMaterial map={texture} toneMapped={false} />}</mesh></group>;
+    return <group position={layout.position} rotation={layout.rotation} scale={hovered ? 1.045 : 1}><mesh position={[0, 0, -0.05]}><boxGeometry args={[cardSize[0] + 0.12, cardSize[1] + 0.12, 0.12]} /><meshStandardMaterial color="#4b2e83" metalness={0.05} roughness={0.82} /></mesh><mesh onClick={(event) => { event.stopPropagation(); onSelectProject(project); }} onPointerOut={() => setHovered(false)} onPointerOver={() => setHovered(true)} position={[0, 0, 0.02]}><planeGeometry args={cardSize} />{project.cover ? <ProjectCoverMaterial cover={project.cover} contain={project.coverContain} /> : <meshBasicMaterial map={texture} toneMapped={false} />}</mesh></group>;
 }
 
-function ProjectCoverMaterial({ cover }) {
+function ProjectCoverMaterial({ contain = false, cover }) {
     const texture = useTexture(cover);
     texture.colorSpace = THREE.SRGBColorSpace;
-    return <meshBasicMaterial map={texture} toneMapped={false} />;
+    const displayTexture = useMemo(() => {
+        if (!contain) return texture;
+        const image = texture.image;
+        const canvas = document.createElement('canvas');
+        canvas.width = 700;
+        canvas.height = 900;
+        const context = canvas.getContext('2d');
+        context.fillStyle = '#f5f5f0';
+        context.fillRect(0, 0, canvas.width, canvas.height);
+        context.strokeStyle = '#4b2e831b';
+        context.lineWidth = 2;
+        for (let x = 0; x <= canvas.width; x += 35) { context.beginPath(); context.moveTo(x, 0); context.lineTo(x, canvas.height); context.stroke(); }
+        for (let y = 0; y <= canvas.height; y += 35) { context.beginPath(); context.moveTo(0, y); context.lineTo(canvas.width, y); context.stroke(); }
+        const scale = Math.min(canvas.width / image.width, canvas.height / image.height);
+        const width = image.width * scale;
+        const height = image.height * scale;
+        context.drawImage(image, (canvas.width - width) / 2, (canvas.height - height) / 2, width, height);
+        const fittedTexture = new THREE.CanvasTexture(canvas);
+        fittedTexture.colorSpace = THREE.SRGBColorSpace;
+        return fittedTexture;
+    }, [contain, texture]);
+    useEffect(() => () => { if (contain) displayTexture.dispose(); }, [contain, displayTexture]);
+    return <meshBasicMaterial map={displayTexture} toneMapped={false} />;
 }
 
 export function ProjectGallery({ onSelectProject }) {

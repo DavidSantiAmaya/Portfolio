@@ -4,8 +4,9 @@ export const lasBotasProjectCard = {
     slug: 'las-botas-viejas-de-papa',
     title: 'Las botas viejas de papá',
     category: 'Narrativa interactiva',
-    summary: 'Cómic digital interactivo basado en el cuento de Manuel Alejandro Estupiñán.',
+    summary: 'Un cómic digital que se lee bajando, se mueve cuando inclinas el teléfono y te deja elegir desde los ojos de quién vivirlo. Una historia llevada a una experiencia interactiva.',
     cover: `${base}portada.png`,
+    coverContain: true,
     tools: ['Guion', 'Storyboard', 'Sketch', 'Lineart', 'Color', 'Desarrollo']
 };
 
