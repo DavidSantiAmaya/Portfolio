@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { sceneInteractions } from '../../config/sceneInteractions';
 import SocialLinks from './SocialLinks';
 import { projects } from '../../data/projects';
@@ -83,7 +83,77 @@ function BattleProjectCaseStudy({ onCloseProject, onReturnToScene, project }) {
     </main>;
 }
 
+function CaronteProjectCaseStudy({ onCloseProject, onReturnToScene, project }) {
+    const [activeImage, setActiveImage] = useState(null);
+    const activeIndex = project.gallery.findIndex(({ src }) => src === activeImage?.src);
+    const animaticRef = useRef(null);
+    const finalRef = useRef(null);
+    useEffect(() => {
+        if (!activeImage) return undefined;
+        const onKeyDown = (event) => {
+            if (event.key === 'Escape') setActiveImage(null);
+            if (event.key === 'ArrowRight') setActiveImage(project.gallery[(activeIndex + 1) % project.gallery.length]);
+            if (event.key === 'ArrowLeft') setActiveImage(project.gallery[(activeIndex - 1 + project.gallery.length) % project.gallery.length]);
+        };
+        window.addEventListener('keydown', onKeyDown);
+        return () => window.removeEventListener('keydown', onKeyDown);
+    }, [activeImage, activeIndex, project.gallery]);
+    const galleryGroups = project.gallery.reduce((result, image) => {
+        (result[image.section] ??= []).push(image);
+        return result;
+    }, {});
+    const fullscreen = (ref) => {
+        const video = ref.current;
+        if (video?.requestFullscreen) video.requestFullscreen();
+        else if (video?.webkitRequestFullscreen) video.webkitRequestFullscreen();
+    };
+
+    return <main className="caronte-project-page">
+        <aside className="caronte-follow-characters" aria-hidden="true"><img className="caronte-follow-boatman" src={`${import.meta.env.BASE_URL}caronte/caronte-floating.png`} alt="" /><img className="caronte-follow-dog" src={`${import.meta.env.BASE_URL}caronte/perrito-floating.png`} alt="" /></aside>
+        <header className="caronte-header"><button className="caronte-brand" onClick={onReturnToScene}><span>DB</span> DAVID SANTIAGO AMAYA REYES</button><nav aria-label="Secciones de Caronte"><a href="#caronte-historia">Historia</a><a href="#caronte-personajes">Personajes</a><a href="#caronte-proceso">Proceso 3D</a><a href="#caronte-animatic">Animático</a><a href="#caronte-final">Final</a><a href="#caronte-galeria">Galería</a></nav><button className="caronte-back" onClick={onCloseProject}>Todos los proyectos <b>↗</b></button></header>
+
+        <section className="caronte-hero" id="caronte-inicio">
+            <div className="caronte-hero-copy"><p className="caronte-eyebrow"><span>PROYECTO 05</span> · ANIMACIÓN 3D</p><h1>CARONTE<em>.</em></h1><p className="caronte-hero-subtitle">Una travesía al inframundo, interrumpida por una pequeña vida.</p><p className="caronte-hero-description">Un cortometraje 3D contado sin palabras, a través de miradas, gestos y ladridos.</p><a className="caronte-hero-link" href="#caronte-historia">Conocer la historia <span>↓</span></a></div>
+            <figure className="caronte-cover"><img src={project.cover} alt="Portada del portafolio 2026 con una escena de Caronte y el perrito en la isla" /><figcaption>ANIMACIÓN 3D · BLENDER</figcaption></figure>
+            <span className="caronte-hero-stamp">UNA HISTORIA<br />SIN PALABRAS</span>
+        </section>
+
+        <div className="caronte-paper-flow">
+            <section className="caronte-section caronte-story" id="caronte-historia"><div className="caronte-section-heading"><p className="caronte-eyebrow">01 / SINOPSIS</p><h2>La rutina se<br /><em>rompe.</em></h2></div><div className="caronte-story-copy"><p>{project.concept}</p><p>{project.objective}</p><span className="caronte-story-note">UNA AVENTURA CÓMICA RUMBO A LAS PUERTAS DEL INFRAMUNDO</span></div></section>
+
+            <section className="caronte-section caronte-cast" id="caronte-personajes"><div className="caronte-section-heading"><p className="caronte-eyebrow">02 / PERSONAJES</p><h2>Dos viajeros,<br /><em>dos mundos.</em></h2></div><div className="caronte-cast-grid">
+                <article className="caronte-character caronte-character-main"><figure><img src={`${import.meta.env.BASE_URL}caronte/caronte-personaje-frontal.png`} alt="Caronte, esqueleto barquero" /></figure><div><span>01 · EL BARQUERO</span><h3>Caronte</h3><p>{project.caronteDescription}</p></div></article>
+                <article className="caronte-character caronte-character-dog"><figure><img src={`${import.meta.env.BASE_URL}caronte/perrito-personaje-frontal.png`} alt="El perrito que llega en el misterioso paquete" /></figure><div><span>02 · EL PASAJERO</span><h3>El perrito</h3><p>{project.dogDescription}</p></div></article>
+            </div></section>
+
+            <section className="caronte-section caronte-process" id="caronte-proceso"><div className="caronte-section-heading"><p className="caronte-eyebrow">03 / MODELADO Y ANIMACIÓN</p><h2>De la forma<br /><em>al movimiento.</em></h2><p>{project.production}</p></div><div className="caronte-process-timeline">{[
+                ['01', 'Bocetos del personaje', 'Exploración inicial de las formas y siluetas de Caronte y el perrito.'],
+                ['02', 'Topología y malla low-poly', 'Construcción de los modelos 3D y desarrollo de la malla low-poly.'],
+                ['03', 'Rig y controles', 'Preparación de rigs y controles para el cuerpo y los ojos de los personajes.'],
+                ['04', 'Escenario 3D de la isla', 'Modelado base, texturizado y render final del escenario con océano.'],
+                ['05', 'Animación', 'Key poses, extreme poses, breakdowns, secondary poses e inbetweens.'],
+                ['06', 'Timing, spacing y pulido', 'Ajuste del tiempo y el espaciado entre poses, con una etapa final de pulido.']
+            ].map(([number, title, description]) => <article key={number}><span>{number}</span><div><h3>{title}</h3><p>{description}</p></div></article>)}</div>
+                <div className="caronte-image-stream">{project.gallery.filter(({ section }) => section === 'Modelado y rig').map((image) => <button key={image.src} onClick={() => setActiveImage(image)} aria-label={`Ampliar: ${image.title}`}><img src={image.src} alt={image.alt} loading="lazy" /><span>{image.title} <b>↗</b></span></button>)}</div>
+            </section>
+
+            <section className="caronte-section caronte-island"><div className="caronte-section-heading"><p className="caronte-eyebrow">04 / ESCENARIO 3D</p><h2>La isla,<br /><em>paso a paso.</em></h2><p>El escenario se desarrolla desde la malla base hasta el render final con océano.</p></div><div className="caronte-island-steps">{project.islandStages.map((stage, index) => <figure key={stage.src}><span>0{index + 1} / {stage.title}</span><button onClick={() => setActiveImage({ ...stage, title: stage.title })} aria-label={`Ampliar: ${stage.title}`}><img src={stage.src} alt={stage.alt} loading="lazy" /></button><figcaption>{stage.title}</figcaption></figure>)}</div></section>
+
+            <section className="caronte-video-section" id="caronte-animatic"><div className="caronte-video-copy"><p className="caronte-eyebrow">05 / ANIMÁTICO</p><h2>Antes de<br /><em>la travesía.</em></h2><p>Una primera versión para recorrer el ritmo y la secuencia de la historia.</p><a href={project.animatic} download>Descargar animático <span>↓</span></a></div><div className="caronte-video-frame"><span className="caronte-frame-label">ANIMATIC · CARONTE</span><video ref={animaticRef} controls playsInline preload="metadata" poster={`${import.meta.env.BASE_URL}caronte/isla-render-oceano.png`} aria-label="Animático de Caronte"><source src={project.animatic} type="video/x-matroska" />Tu navegador no pudo reproducir el archivo Matroska. Usa el botón para descargar el animático.</video><button onClick={() => fullscreen(animaticRef)}>Ver a pantalla completa <span>⛶</span></button></div></section>
+
+            <section className="caronte-video-section caronte-final-section" id="caronte-final"><div className="caronte-video-copy"><p className="caronte-eyebrow">06 / RESULTADO FINAL</p><h2>El viaje<br /><em>completo.</em></h2><p>El cortometraje final de Caronte. Reprodúcelo aquí o expándelo a pantalla completa.</p><a href={project.finalVideo} target="_blank" rel="noopener noreferrer">Abrir video aparte <span>↗</span></a></div><div className="caronte-video-frame"><span className="caronte-frame-label">CARONTE · ANIMACIÓN 3D FINAL</span><video ref={finalRef} controls playsInline preload="metadata" poster={`${import.meta.env.BASE_URL}caronte/portada.png`} aria-label="Cortometraje final de Caronte"><source src={project.finalVideo} type="video/mp4" />Tu navegador no pudo reproducir el video.</video><button onClick={() => fullscreen(finalRef)}>Ver a pantalla completa <span>⛶</span></button></div></section>
+
+            <section className="caronte-section caronte-gallery" id="caronte-galeria"><div className="caronte-section-heading"><p className="caronte-eyebrow">07 / CUADERNO VISUAL</p><h2>Personajes,<br /><em>escenario y proceso.</em></h2><p>Explora los modelos, vistas y capturas de trabajo. Selecciona una imagen para verla en grande.</p></div>{Object.entries(galleryGroups).map(([group, images]) => <div className="caronte-gallery-group" key={group}><h3>{group}</h3><div className="caronte-gallery-grid">{images.map((image, index) => <button key={image.src} onClick={() => setActiveImage(image)} aria-label={`Ampliar: ${image.title}`}><span><img src={image.src} alt={image.alt} loading="lazy" /></span><b><i>{String(index + 1).padStart(2, '0')}</i>{image.title}<em>↗</em></b></button>)}</div></div>)}</section>
+
+            <section className="caronte-credits"><div><p className="caronte-eyebrow">AUTORÍA Y HERRAMIENTAS</p><h2>Hecho en<br /><em>Blender.</em></h2><span>{project.author} · {project.role}</span><p>{project.production}</p><div className="caronte-tech">{project.tools.map((tool) => <b key={tool}>{tool}</b>)}</div></div><figure><img src={`${import.meta.env.BASE_URL}caronte/caronte-y-perrito-escena.png`} alt="Caronte y el perrito juntos en una escena" loading="lazy" /></figure></section>
+            <footer className="caronte-footer"><div><span>PROYECTO 05 · ANIMACIÓN 3D</span><h2>Gracias por<br /><em>acompañarlos.</em></h2><SocialLinks className="social-actions caronte-social-actions" /></div><button onClick={onReturnToScene}>Volver al escritorio 3D <span>↗</span></button></footer>
+        </div>
+        {activeImage && <div className="caronte-lightbox" role="dialog" aria-modal="true" aria-label={activeImage.title} onClick={() => setActiveImage(null)}><button className="caronte-lightbox-close" aria-label="Cerrar imagen" onClick={() => setActiveImage(null)}>×</button><button className="caronte-lightbox-prev" aria-label="Imagen anterior" onClick={(event) => { event.stopPropagation(); setActiveImage(project.gallery[(activeIndex - 1 + project.gallery.length) % project.gallery.length]); }}>‹</button><figure onClick={(event) => event.stopPropagation()}><img src={activeImage.src} alt={activeImage.alt} /><figcaption>{activeImage.title}</figcaption></figure><button className="caronte-lightbox-next" aria-label="Imagen siguiente" onClick={(event) => { event.stopPropagation(); setActiveImage(project.gallery[(activeIndex + 1) % project.gallery.length]); }}>›</button></div>}
+    </main>;
+}
+
 function ProjectCaseStudy({ onCloseProject, onReturnToScene, project }) {
+    if (project.slug === 'caronte') return <CaronteProjectCaseStudy onCloseProject={onCloseProject} onReturnToScene={onReturnToScene} project={project} />;
     if (project.slug === 'batalla-pantano-de-vargas') return <BattleProjectCaseStudy onCloseProject={onCloseProject} onReturnToScene={onReturnToScene} project={project} />;
     const gallerySections = project.gallery?.reduce((sections, image) => {
         sections[image.section] ??= [];
@@ -139,6 +209,7 @@ function ProjectCaseStudy({ onCloseProject, onReturnToScene, project }) {
 
 function TraditionalPortfolio({ onCloseProject, onOpenProject, onReturnToScene, project }) {
     if (project?.slug === 'batalla-pantano-de-vargas') return <BattleProjectCaseStudy onCloseProject={onCloseProject} onReturnToScene={onReturnToScene} project={project} />;
+    if (project?.slug === 'caronte') return <CaronteProjectCaseStudy onCloseProject={onCloseProject} onReturnToScene={onReturnToScene} project={project} />;
     return <div className="traditional-portfolio"><Doodles /><header className="portfolio-header"><button className="wordmark" onClick={onReturnToScene}><i>D</i>avid Santiago Amaya Reyes</button><button className="text-button" onClick={onReturnToScene}>Volver al escritorio</button></header>{project ? <ProjectCaseStudy onCloseProject={onCloseProject} project={project} /> : <><section className="portfolio-intro paper-sheet"><span className="intro-tag">PORTAFOLIO 2026</span><p>HOLA, SOY DAVID</p><h1>Ideas que<br /><em>hacen ruido.</em></h1><span>Diseño, ilustración, 3D y experiencias digitales hechas con intención, curiosidad y mucho marcador.</span><div className="intro-scribble">CREAR<br />SIN MIEDO</div></section><About /><ProjectList onOpenProject={onOpenProject} /></>}</div>;
 }
 
