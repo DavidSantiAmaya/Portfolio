@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { sceneInteractions } from '../../config/sceneInteractions';
-import SocialLinks from './SocialLinks';
+import SocialLinks, { contactUrl } from './SocialLinks';
+import { useAccessibleDialog } from './useAccessibleDialog';
 import { projects } from '../../data/projects';
 import './project-three.css';
 
@@ -12,7 +13,23 @@ function Doodles() {
 }
 
 function ProjectList({ onOpenProject }) {
-    return <section aria-label="Proyectos de David Santiago Amaya Reyes" className="project-list">{projects.map((project, index) => <article className={`project-card project-card-${index + 1}`} key={project.slug}><span className="card-index">0{index + 1}</span>{project.cover ? <img className="project-card-cover" src={project.cover} alt={`Portada de ${project.title}`} /> : <div className="polaroid-hole" />}<p>{project.category}</p><h3>{project.title}</h3><span className="card-summary">{project.summary}</span><button onClick={() => onOpenProject(project)}>Abrir proyecto <b>-&gt;</b></button></article>)}</section>;
+    return <section aria-labelledby="projects-title" className="project-list" id="proyectos" tabIndex={-1}>
+        <h2 className="project-list-title" id="projects-title">Proyectos</h2>
+        {projects.map((project, index) => <article className={`project-card project-card-${index + 1}`} key={project.slug}><span className="card-index">0{index + 1}</span>{project.cover ? <img className="project-card-cover" src={project.cover} srcSet={project.coverSrcSet} sizes={project.coverSizes} alt={`Portada de ${project.title}`} loading="lazy" decoding="async" /> : <div className="polaroid-hole" />}<p>{project.category}</p><h3>{project.title}</h3><span className="card-summary">{project.summary}</span><button onClick={() => onOpenProject(project)}>Abrir proyecto <b>-&gt;</b></button></article>)}
+    </section>;
+}
+
+function MusicAccessPanel({ music }) {
+    if (!music) return null;
+
+    return <aside aria-label="Reproductor de música" aria-live="polite" className="music-access-panel">
+        <p>{music.isPlaying ? 'Reproduciendo' : 'En pausa'}: {music.track.title} — {music.track.artist}</p>
+        <div>
+            <button onClick={music.previousTrack}>Canción anterior</button>
+            <button onClick={music.togglePlayback}>{music.isPlaying ? 'Pausar' : 'Reproducir'}</button>
+            <button onClick={music.nextTrack}>Canción siguiente</button>
+        </div>
+    </aside>;
 }
 
 function GalleryHud({ onCloseInteraction, onOpenPortfolio }) {
@@ -20,7 +37,7 @@ function GalleryHud({ onCloseInteraction, onOpenPortfolio }) {
 }
 
 function SceneProjectPanel({ onClearSceneProject, onOpenProject, project }) {
-    return <aside aria-live="polite" className={`scene-project-panel paper-sheet${project.cover ? ' has-cover' : ''}`}><button aria-label="Volver a la galería" className="close-button" onClick={onClearSceneProject}>x</button>{project.cover && <img className="scene-project-cover" src={project.cover} alt={`Portada de ${project.title}`} />}<span className="detail-sticker">ESTACIÓN DE TRABAJO</span><p>{project.category}</p><h2>{project.title}</h2><span>{project.summary}</span><h3>Elementos relacionados</h3><ul>{project.tools.map((tool) => <li key={tool}>{tool}</li>)}</ul><button className="text-button" onClick={() => onOpenProject(project)}>Abrir ficha completa</button></aside>;
+    return <aside aria-live="polite" className={`scene-project-panel paper-sheet${project.cover ? ' has-cover' : ''}`}><button aria-label="Volver a la galería" className="close-button" onClick={onClearSceneProject}>x</button>{project.cover && <img className="scene-project-cover" src={project.cover} srcSet={project.coverSrcSet} sizes="(max-width: 768px) 35vw, 180px" alt={`Portada de ${project.title}`} />}<span className="detail-sticker">ESTACIÓN DE TRABAJO</span><p>{project.category}</p><h2>{project.title}</h2><span>{project.summary}</span><h3>Elementos relacionados</h3><ul>{project.tools.map((tool) => <li key={tool}>{tool}</li>)}</ul><button className="text-button" onClick={() => onOpenProject(project)}>Abrir ficha completa</button></aside>;
 }
 
 function ObjectPanel({ interaction, onCloseInteraction, onOpenPortfolio }) {
@@ -34,6 +51,7 @@ function About() {
 
 function BattleProjectCaseStudy({ onCloseProject, onReturnToScene, project }) {
     const [activeImage, setActiveImage] = useState(null);
+    const { dialogRef, onDialogKeyDown } = useAccessibleDialog(Boolean(activeImage));
     const imageIndex = project.gallery.findIndex(({ src }) => src === activeImage?.src);
     useEffect(() => {
         if (!activeImage) return undefined;
@@ -54,7 +72,7 @@ function BattleProjectCaseStudy({ onCloseProject, onReturnToScene, project }) {
     return <main className="battle-project-page">
         <header className="battle-header"><button className="battle-brand" onClick={onReturnToScene}><b>03</b> DAVID SANTIAGO AMAYA REYES</button><button className="battle-back" onClick={onCloseProject}>Todos los proyectos <span>↗</span></button></header>
         <section className="battle-hero" id="battle-start">
-            <img src={project.cover} alt="Ilustración monocromática de la Batalla del Pantano de Vargas" />
+            <img src={project.cover} srcSet={project.coverSrcSet} sizes="100vw" alt="Ilustración monocromática de la Batalla del Pantano de Vargas" />
             <div className="battle-hero-shade" />
             <div className="battle-hero-copy"><p>PROYECTO MULTIMEDIA <i>—</i> PORTAFOLIO 2026</p><h1>Narrativa web<br /><em>interactiva.</em></h1><span>{project.summary}</span><a href="#battle-about">Descubrir el proyecto <b>↓</b></a></div>
             <span className="battle-hero-index">03 <i /> 06</span>
@@ -79,12 +97,13 @@ function BattleProjectCaseStudy({ onCloseProject, onReturnToScene, project }) {
             </section>
             <footer className="battle-footer"><span>BATALLA DEL PANTANO DE VARGAS · NARRATIVA WEB INTERACTIVA</span><SocialLinks className="detail-social" /></footer>
         </div>
-        {activeImage && <div className="battle-lightbox" role="dialog" aria-modal="true" aria-label={activeImage.title} onClick={() => setActiveImage(null)}><button aria-label="Cerrar imagen" onClick={() => setActiveImage(null)}>×</button><figure onClick={(event) => event.stopPropagation()}><img src={activeImage.src} alt={activeImage.alt} /><figcaption>{activeImage.title}</figcaption></figure><button className="battle-lightbox-prev" aria-label="Imagen anterior" onClick={(event) => { event.stopPropagation(); setActiveImage(project.gallery[(imageIndex - 1 + project.gallery.length) % project.gallery.length]); }}>‹</button><button className="battle-lightbox-next" aria-label="Imagen siguiente" onClick={(event) => { event.stopPropagation(); setActiveImage(project.gallery[(imageIndex + 1) % project.gallery.length]); }}>›</button></div>}
+        {activeImage && <div ref={dialogRef} className="battle-lightbox" role="dialog" aria-modal="true" aria-label={activeImage.title} tabIndex={-1} onKeyDown={onDialogKeyDown} onClick={() => setActiveImage(null)}><button aria-label="Cerrar imagen" onClick={() => setActiveImage(null)}>×</button><figure onClick={(event) => event.stopPropagation()}><img src={activeImage.src} alt={activeImage.alt} /><figcaption>{activeImage.title}</figcaption></figure><button className="battle-lightbox-prev" aria-label="Imagen anterior" onClick={(event) => { event.stopPropagation(); setActiveImage(project.gallery[(imageIndex - 1 + project.gallery.length) % project.gallery.length]); }}>‹</button><button className="battle-lightbox-next" aria-label="Imagen siguiente" onClick={(event) => { event.stopPropagation(); setActiveImage(project.gallery[(imageIndex + 1) % project.gallery.length]); }}>›</button></div>}
     </main>;
 }
 
 function CaronteProjectCaseStudy({ onCloseProject, onReturnToScene, project }) {
     const [activeImage, setActiveImage] = useState(null);
+    const { dialogRef, onDialogKeyDown } = useAccessibleDialog(Boolean(activeImage));
     const activeIndex = project.gallery.findIndex(({ src }) => src === activeImage?.src);
     const animaticRef = useRef(null);
     const finalRef = useRef(null);
@@ -110,11 +129,11 @@ function CaronteProjectCaseStudy({ onCloseProject, onReturnToScene, project }) {
 
     return <main className="caronte-project-page">
         <aside className="caronte-follow-characters" aria-hidden="true"><img className="caronte-follow-boatman" src={`${import.meta.env.BASE_URL}caronte/caronte-floating.png`} alt="" /><img className="caronte-follow-dog" src={`${import.meta.env.BASE_URL}caronte/perrito-floating.png`} alt="" /></aside>
-        <header className="caronte-header"><button className="caronte-brand" onClick={onReturnToScene}><span>DB</span> DAVID SANTIAGO AMAYA REYES</button><nav aria-label="Secciones de Caronte"><a href="#caronte-historia">Historia</a><a href="#caronte-personajes">Personajes</a><a href="#caronte-proceso">Proceso 3D</a><a href="#caronte-animatic">Animático</a><a href="#caronte-final">Final</a><a href="#caronte-galeria">Galería</a></nav><button className="caronte-back" onClick={onCloseProject}>Todos los proyectos <b>↗</b></button></header>
+        <header className="caronte-header"><button className="caronte-brand" onClick={onReturnToScene}><span>DB</span> DAVID SANTIAGO AMAYA REYES</button><nav aria-label="Secciones de Caronte"><span className="caronte-nav-hint">Desliza para ver más</span><a href="#caronte-historia">Historia</a><a href="#caronte-personajes">Personajes</a><a href="#caronte-proceso">Proceso 3D</a><a href="#caronte-animatic">Animático</a><a href="#caronte-final">Final</a><a href="#caronte-galeria">Galería</a></nav><div className="caronte-header-actions"><a className="caronte-contact" href={contactUrl} target="_blank" rel="noopener noreferrer">Contactar por LinkedIn</a><button className="caronte-back" onClick={onCloseProject}>Todos los proyectos <b>↗</b></button></div></header>
 
         <section className="caronte-hero" id="caronte-inicio">
             <div className="caronte-hero-copy"><p className="caronte-eyebrow"><span>PROYECTO 05</span> · ANIMACIÓN 3D</p><h1>CARONTE<em>.</em></h1><p className="caronte-hero-subtitle">Una travesía al inframundo, interrumpida por una pequeña vida.</p><p className="caronte-hero-description">Un cortometraje 3D contado sin palabras, a través de miradas, gestos y ladridos.</p><a className="caronte-hero-link" href="#caronte-historia">Conocer la historia <span>↓</span></a></div>
-            <figure className="caronte-cover"><img src={project.cover} alt="Portada del portafolio 2026 con una escena de Caronte y el perrito en la isla" /><figcaption>ANIMACIÓN 3D · BLENDER</figcaption></figure>
+            <figure className="caronte-cover"><img src={project.cover} srcSet={project.coverSrcSet} sizes="(max-width: 700px) 90vw, 48vw" alt="Portada del portafolio 2026 con una escena de Caronte y el perrito en la isla" /><figcaption>ANIMACIÓN 3D · BLENDER</figcaption></figure>
             <span className="caronte-hero-stamp">UNA HISTORIA<br />SIN PALABRAS</span>
         </section>
 
@@ -139,16 +158,16 @@ function CaronteProjectCaseStudy({ onCloseProject, onReturnToScene, project }) {
 
             <section className="caronte-section caronte-island"><div className="caronte-section-heading"><p className="caronte-eyebrow">04 / ESCENARIO 3D</p><h2>La isla,<br /><em>paso a paso.</em></h2><p>El escenario se desarrolla desde la malla base hasta el render final con océano.</p></div><div className="caronte-island-steps">{project.islandStages.map((stage, index) => <figure key={stage.src}><span>0{index + 1} / {stage.title}</span><button onClick={() => setActiveImage({ ...stage, title: stage.title })} aria-label={`Ampliar: ${stage.title}`}><img src={stage.src} alt={stage.alt} loading="lazy" /></button><figcaption>{stage.title}</figcaption></figure>)}</div></section>
 
-            <section className="caronte-video-section" id="caronte-animatic"><div className="caronte-video-copy"><p className="caronte-eyebrow">05 / ANIMÁTICO</p><h2>Antes de<br /><em>la travesía.</em></h2><p>Una primera versión para recorrer el ritmo y la secuencia de la historia.</p><a href={project.animatic} download>Descargar animático <span>↓</span></a></div><div className="caronte-video-frame"><span className="caronte-frame-label">ANIMATIC · CARONTE</span><video ref={animaticRef} controls playsInline preload="metadata" poster={`${import.meta.env.BASE_URL}caronte/isla-render-oceano.png`} aria-label="Animático de Caronte"><source src={project.animatic} type="video/x-matroska" />Tu navegador no pudo reproducir el archivo Matroska. Usa el botón para descargar el animático.</video><button onClick={() => fullscreen(animaticRef)}>Ver a pantalla completa <span>⛶</span></button></div></section>
+            <section className="caronte-video-section" id="caronte-animatic"><div className="caronte-video-copy"><p className="caronte-eyebrow">05 / ANIMÁTICO</p><h2>Antes de<br /><em>la travesía.</em></h2><p>Una primera versión para recorrer el ritmo y la secuencia de la historia.</p><a href={project.animatic} download>Descargar animático original (MKV) <span>↓</span></a></div><div className="caronte-video-frame"><span className="caronte-frame-label">ANIMATIC · CARONTE</span><video ref={animaticRef} controls playsInline preload="none" poster={`${import.meta.env.BASE_URL}caronte/isla-render-oceano.png`} aria-label="Animático de Caronte"><source src={project.animatic} type="video/x-matroska" />Tu navegador no pudo reproducir el animático. Usa el enlace para descargar el original.</video><button onClick={() => fullscreen(animaticRef)}>Ver a pantalla completa <span>⛶</span></button></div></section>
 
-            <section className="caronte-video-section caronte-final-section" id="caronte-final"><div className="caronte-video-copy"><p className="caronte-eyebrow">06 / RESULTADO FINAL</p><h2>El viaje<br /><em>completo.</em></h2><p>El cortometraje final de Caronte. Reprodúcelo aquí o expándelo a pantalla completa.</p><a href={project.finalVideo} target="_blank" rel="noopener noreferrer">Abrir video aparte <span>↗</span></a></div><div className="caronte-video-frame"><span className="caronte-frame-label">CARONTE · ANIMACIÓN 3D FINAL</span><video ref={finalRef} controls playsInline preload="metadata" poster={`${import.meta.env.BASE_URL}caronte/portada.png`} aria-label="Cortometraje final de Caronte"><source src={project.finalVideo} type="video/mp4" />Tu navegador no pudo reproducir el video.</video><button onClick={() => fullscreen(finalRef)}>Ver a pantalla completa <span>⛶</span></button></div></section>
+            <section className="caronte-video-section caronte-final-section" id="caronte-final"><div className="caronte-video-copy"><p className="caronte-eyebrow">06 / RESULTADO FINAL</p><h2>El viaje<br /><em>completo.</em></h2><p>El cortometraje final de Caronte. Reprodúcelo aquí o expándelo a pantalla completa.</p><a href={project.finalVideo} target="_blank" rel="noopener noreferrer">Abrir video aparte <span>↗</span></a></div><div className="caronte-video-frame"><span className="caronte-frame-label">CARONTE · ANIMACIÓN 3D FINAL</span><video ref={finalRef} controls playsInline preload="none" poster={`${import.meta.env.BASE_URL}caronte/portada.png`} aria-label="Cortometraje final de Caronte"><source src={project.finalVideo} type="video/mp4" />Tu navegador no pudo reproducir el video.</video><button onClick={() => fullscreen(finalRef)}>Ver a pantalla completa <span>⛶</span></button></div></section>
 
             <section className="caronte-section caronte-gallery" id="caronte-galeria"><div className="caronte-section-heading"><p className="caronte-eyebrow">07 / CUADERNO VISUAL</p><h2>Personajes,<br /><em>escenario y proceso.</em></h2><p>Explora los modelos, vistas y capturas de trabajo. Selecciona una imagen para verla en grande.</p></div>{Object.entries(galleryGroups).map(([group, images]) => <div className="caronte-gallery-group" key={group}><h3>{group}</h3><div className="caronte-gallery-grid">{images.map((image, index) => <button key={image.src} onClick={() => setActiveImage(image)} aria-label={`Ampliar: ${image.title}`}><span><img src={image.src} alt={image.alt} loading="lazy" /></span><b><i>{String(index + 1).padStart(2, '0')}</i>{image.title}<em>↗</em></b></button>)}</div></div>)}</section>
 
             <section className="caronte-credits"><div><p className="caronte-eyebrow">AUTORÍA Y HERRAMIENTAS</p><h2>Hecho en<br /><em>Blender.</em></h2><span>{project.author} · {project.role}</span><p>{project.production}</p><div className="caronte-tech">{project.tools.map((tool) => <b key={tool}>{tool}</b>)}</div></div><figure><img src={`${import.meta.env.BASE_URL}caronte/caronte-y-perrito-escena.png`} alt="Caronte y el perrito juntos en una escena" loading="lazy" /></figure></section>
             <footer className="caronte-footer"><div><span>PROYECTO 05 · ANIMACIÓN 3D</span><h2>Gracias por<br /><em>acompañarlos.</em></h2><SocialLinks className="social-actions caronte-social-actions" /></div><button onClick={onReturnToScene}>Volver al escritorio 3D <span>↗</span></button></footer>
         </div>
-        {activeImage && <div className="caronte-lightbox" role="dialog" aria-modal="true" aria-label={activeImage.title} onClick={() => setActiveImage(null)}><button className="caronte-lightbox-close" aria-label="Cerrar imagen" onClick={() => setActiveImage(null)}>×</button><button className="caronte-lightbox-prev" aria-label="Imagen anterior" onClick={(event) => { event.stopPropagation(); setActiveImage(project.gallery[(activeIndex - 1 + project.gallery.length) % project.gallery.length]); }}>‹</button><figure onClick={(event) => event.stopPropagation()}><img src={activeImage.src} alt={activeImage.alt} /><figcaption>{activeImage.title}</figcaption></figure><button className="caronte-lightbox-next" aria-label="Imagen siguiente" onClick={(event) => { event.stopPropagation(); setActiveImage(project.gallery[(activeIndex + 1) % project.gallery.length]); }}>›</button></div>}
+        {activeImage && <div ref={dialogRef} className="caronte-lightbox" role="dialog" aria-modal="true" aria-label={activeImage.title} tabIndex={-1} onKeyDown={onDialogKeyDown} onClick={() => setActiveImage(null)}><button className="caronte-lightbox-close" aria-label="Cerrar imagen" onClick={() => setActiveImage(null)}>×</button><button className="caronte-lightbox-prev" aria-label="Imagen anterior" onClick={(event) => { event.stopPropagation(); setActiveImage(project.gallery[(activeIndex - 1 + project.gallery.length) % project.gallery.length]); }}>‹</button><figure onClick={(event) => event.stopPropagation()}><img src={activeImage.src} alt={activeImage.alt} /><figcaption>{activeImage.title}</figcaption></figure><button className="caronte-lightbox-next" aria-label="Imagen siguiente" onClick={(event) => { event.stopPropagation(); setActiveImage(project.gallery[(activeIndex + 1) % project.gallery.length]); }}>›</button></div>}
     </main>;
 }
 
@@ -174,7 +193,7 @@ function ProjectCaseStudy({ onCloseProject, onReturnToScene, project }) {
         </div>
 
         {project.cover && <figure className="project-cover-figure">
-            <img fetchPriority="high" src={project.cover} alt={`Portada de ${project.title}`} />
+            <img fetchPriority="high" src={project.cover} srcSet={project.coverSrcSet} sizes="(max-width: 700px) 90vw, 48vw" alt={`Portada de ${project.title}`} />
             <figcaption>PORTADA DEL PROYECTO</figcaption>
         </figure>}
 
@@ -210,13 +229,68 @@ function ProjectCaseStudy({ onCloseProject, onReturnToScene, project }) {
 function TraditionalPortfolio({ onCloseProject, onOpenProject, onReturnToScene, project }) {
     if (project?.slug === 'batalla-pantano-de-vargas') return <BattleProjectCaseStudy onCloseProject={onCloseProject} onReturnToScene={onReturnToScene} project={project} />;
     if (project?.slug === 'caronte') return <CaronteProjectCaseStudy onCloseProject={onCloseProject} onReturnToScene={onReturnToScene} project={project} />;
-    return <div className="traditional-portfolio"><Doodles /><header className="portfolio-header"><button className="wordmark" onClick={onReturnToScene}><i>D</i>avid Santiago Amaya Reyes</button><button className="text-button" onClick={onReturnToScene}>Volver al escritorio</button></header>{project ? <ProjectCaseStudy onCloseProject={onCloseProject} project={project} /> : <><section className="portfolio-intro paper-sheet"><span className="intro-tag">PORTAFOLIO 2026</span><p>HOLA, SOY DAVID</p><h1>Ideas que<br /><em>hacen ruido.</em></h1><span>Diseño, ilustración, 3D y experiencias digitales hechas con intención, curiosidad y mucho marcador.</span><div className="intro-scribble">CREAR<br />SIN MIEDO</div></section><About /><ProjectList onOpenProject={onOpenProject} /></>}</div>;
+    return (
+        <div className="traditional-portfolio">
+            <Doodles />
+            <header className="portfolio-header">
+                <button className="wordmark" onClick={onReturnToScene}><i>D</i>avid Santiago Amaya Reyes</button>
+                <div className="portfolio-header-actions">
+                    <a className="text-button contact-link" href={contactUrl} target="_blank" rel="noopener noreferrer">Contactarme</a>
+                    <button className="text-button" onClick={onReturnToScene}>Volver al escritorio</button>
+                </div>
+            </header>
+            {project ? (
+                <main className="portfolio-main"><ProjectCaseStudy onCloseProject={onCloseProject} project={project} /></main>
+            ) : (
+                <main className="portfolio-main">
+                    <section className="portfolio-intro paper-sheet">
+                        <span className="intro-tag">PORTAFOLIO 2026</span>
+                        <p>HOLA, SOY DAVID</p>
+                        <h1>Ideas que<br /><em>hacen ruido.</em></h1>
+                        <span>Diseño, ilustración, 3D y experiencias digitales. Explora mis proyectos y procesos.</span>
+                        <a className="primary-action" href="#proyectos">Ver proyectos</a>
+                        <div className="intro-scribble">CREAR<br />SIN MIEDO</div>
+                    </section>
+                    <ProjectList onOpenProject={onOpenProject} />
+                    <About />
+                </main>
+            )}
+        </div>
+    );
 }
 
-export function PortfolioInterface({ activeId, onClearSceneProject, onCloseInteraction, onCloseProject, onOpenPortfolio, onOpenProject, onReturnToScene, project, sceneProject, showPortfolio }) {
+export function PortfolioInterface({ activeId, music, onClearSceneProject, onCloseInteraction, onCloseProject, onOpenPortfolio, onOpenProject, onReturnToScene, onSelectInteraction, project, sceneProject, showPortfolio }) {
     const interaction = activeId ? sceneInteractions[activeId] : null;
     if (showPortfolio) return <TraditionalPortfolio onCloseProject={onCloseProject} onOpenProject={onOpenProject} onReturnToScene={onReturnToScene} project={project} />;
 
     const isMusic = activeId === 'music';
-    return <><Doodles /><header className="scene-header"><button className="wordmark" onClick={onCloseInteraction}><i>D</i>AVID SANTIAGO AMAYA REYES</button><button className="text-button" onClick={onOpenPortfolio}>Portafolio en papel</button></header><div className="scene-copy"><span className="scribble-label">HOLA!</span><p>{sceneProject ? 'PROYECTO SELECCIONADO' : isMusic ? 'MÚSICA AMBIENTAL' : activeId === 'projects' ? 'EXPLORA LA GALERÍA' : 'DISEÑO / ILUSTRACIÓN / 3D'}</p><h1>{sceneProject ? <>{sceneProject.title}<br /><em>en proceso.</em></> : isMusic ? <>Sube el<br /><em>volumen.</em></> : activeId === 'projects' ? <>Proyectos<br /><em>en el aire.</em></> : <>Ideas con<br /><em>mucho color.</em></>}</h1><span>{sceneProject ? 'El monitor activo muestra la estación de trabajo asociada.' : isMusic ? 'Usa los tres botones de la tarjeta para cambiar o pausar la canción.' : activeId === 'projects' ? 'Mueve la vista y selecciona una tarjeta.' : 'Toca los modelos para explorar el estudio.'}</span></div>{sceneProject ? <SceneProjectPanel onClearSceneProject={onClearSceneProject} onOpenProject={onOpenProject} project={sceneProject} /> : interaction && (activeId === 'projects' ? <GalleryHud onCloseInteraction={onCloseInteraction} onOpenPortfolio={onOpenPortfolio} /> : !isMusic && <ObjectPanel interaction={interaction} onCloseInteraction={onCloseInteraction} onOpenPortfolio={onOpenPortfolio} />)}</>;
+    return (
+        <>
+            <Doodles />
+            <header className="scene-header">
+                <button className="wordmark" onClick={onCloseInteraction}><i>D</i>AVID SANTIAGO AMAYA REYES</button>
+                <div className="scene-header-actions">
+                    <button className="text-button" onClick={onOpenPortfolio}>Ver proyectos</button>
+                    <a className="text-button contact-link" href={contactUrl} target="_blank" rel="noopener noreferrer">Contactarme</a>
+                </div>
+            </header>
+            <main className="scene-main">
+                <div className="scene-copy">
+                    <span className="scribble-label">HOLA!</span>
+                    <p>{sceneProject ? 'PROYECTO SELECCIONADO' : isMusic ? 'MÚSICA AMBIENTAL' : activeId === 'projects' ? 'EXPLORA LA GALERÍA' : 'DISEÑO / ILUSTRACIÓN / 3D'}</p>
+                    <h1>{sceneProject ? <>{sceneProject.title}<br /><em>en proceso.</em></> : isMusic ? <>Sube el<br /><em>volumen.</em></> : activeId === 'projects' ? <>Proyectos<br /><em>en el aire.</em></> : <>Ideas con<br /><em>mucho color.</em></>}</h1>
+                    <span>{sceneProject ? 'El monitor activo muestra la estación de trabajo asociada.' : isMusic ? 'Elige una canción, reprodúcela o cambia de pista.' : activeId === 'projects' ? 'Abre un proyecto de la galería o consulta la lista completa.' : 'Explora el escritorio con estos accesos o abre la lista de proyectos.'}</span>
+                    <nav className="scene-shortcuts" aria-label="Accesos del escritorio">
+                        <button onClick={onOpenPortfolio}>Lista de proyectos</button>
+                        <button onClick={() => onSelectInteraction('projects')}>Galería 3D</button>
+                        <button onClick={() => onSelectInteraction('artwork')}>Ilustración</button>
+                        <button onClick={() => onSelectInteraction('keyboard')}>Herramientas</button>
+                        <button onClick={() => onSelectInteraction('music')}>Música</button>
+                    </nav>
+                </div>
+                {isMusic && <MusicAccessPanel music={music} />}
+                {sceneProject ? <SceneProjectPanel onClearSceneProject={onClearSceneProject} onOpenProject={onOpenProject} project={sceneProject} /> : interaction && (activeId === 'projects' ? <GalleryHud onCloseInteraction={onCloseInteraction} onOpenPortfolio={onOpenPortfolio} /> : !isMusic && <ObjectPanel interaction={interaction} onCloseInteraction={onCloseInteraction} onOpenPortfolio={onOpenPortfolio} />)}
+            </main>
+        </>
+    );
 }

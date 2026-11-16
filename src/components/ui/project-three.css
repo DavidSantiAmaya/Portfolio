@@ -101,6 +101,9 @@
 .caronte-header nav a:hover { color:var(--caronte-orange); }
 .caronte-back { border:2px solid var(--caronte-purple); box-shadow:3px 3px 0 var(--caronte-orange); padding:10px 12px; white-space:nowrap; }
 .caronte-back b { font-size:1rem; margin-left:7px; }
+.caronte-header-actions { align-items:center; display:flex; flex:0 0 auto; gap:8px; }
+.caronte-contact { align-items:center; background:var(--caronte-purple); border:2px solid var(--caronte-purple); box-shadow:3px 3px 0 var(--caronte-orange); color:#fff!important; display:inline-flex; font-size:.875rem; font-weight:900; min-height:44px; padding:0 12px; text-decoration:none; text-transform:uppercase; white-space:nowrap; }
+.caronte-nav-hint { display:none; }
 .caronte-hero { align-items:center; display:grid; gap:clamp(28px,6vw,90px); grid-template-columns:1fr 1.06fr; margin:0 auto; max-width:1480px; min-height:calc(100svh - 60px); padding:clamp(50px,8vw,115px) clamp(30px,10vw,145px); position:relative; z-index:3; }
 .caronte-hero-copy { position:relative; z-index:1; }
 .caronte-eyebrow { color:var(--caronte-purple); font-size:.68rem; font-weight:900; letter-spacing:.15em; margin:0 0 18px; text-transform:uppercase; }
@@ -248,3 +251,30 @@
 .project-card-3 > button { background: #171717 !important; border-color: #171717 !important; color: #fff !important; }
 .project-card-3 > button:hover { background: #7041c7 !important; border-color: #7041c7 !important; }
 @media (max-width: 700px) { .project-detail-battle > h1 { font-size: clamp(2.1rem, 11vw, 3.4rem); line-height: 1.04; } }
+
+@media (max-width: 640px) {
+    .battle-project-page p:not(.battle-eyebrow),
+    .caronte-project-page p:not(.caronte-eyebrow) { font-size: 16px; }
+    .battle-project-page button,
+    .caronte-project-page button { min-height: 44px; min-width: 44px; }
+    .battle-project-page .battle-lightbox-prev,
+    .battle-project-page .battle-lightbox-next,
+    .caronte-project-page .caronte-lightbox-prev,
+    .caronte-project-page .caronte-lightbox-next { height: 44px; min-height: 44px; min-width: 44px; width: 44px; }
+    .caronte-header nav a { align-items: center; display: inline-flex; min-height: 44px; }
+}
+
+@media(max-width:1080px) {
+    .caronte-header-actions { margin-left:auto; order:2; }
+    .caronte-nav-hint { align-items:center; background:var(--caronte-paper); color:var(--caronte-purple); display:inline-flex; flex:0 0 auto; font-size:.75rem; font-weight:800; left:0; padding:0 10px 0 1px; position:sticky; white-space:nowrap; z-index:1; }
+}
+
+@media(max-width:720px) {
+    .caronte-brand, .caronte-back, .caronte-header nav a { font-size:.875rem; }
+    .caronte-hero-link, .caronte-video-copy > a, .caronte-video-frame > button,
+    .caronte-social-actions .social-button { font-size:.875rem; }
+    .caronte-hero-link, .caronte-video-copy > a { min-height:44px; }
+    .caronte-eyebrow, .caronte-character > div > span, .caronte-island-steps figure > span,
+    .caronte-frame-label, .caronte-gallery-grid button > b,
+    .caronte-gallery-grid button > b i, .caronte-tech b, .caronte-footer > div > span { font-size:.75rem; }
+}

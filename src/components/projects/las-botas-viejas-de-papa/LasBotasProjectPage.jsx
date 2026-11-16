@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
 
 import { lasBotasProject as project } from '../../../data/lasBotasProject';
+import { homePath } from '../../../config/routes';
+import { useAccessibleDialog } from '../../ui/useAccessibleDialog';
 import SocialLinks from './SocialLinks';
 import './LasBotasProjectPage.css';
 
@@ -22,6 +24,7 @@ function ImageGallery({ onSelect }) {
 export default function LasBotasProjectPage({ onReturn }) {
     const [menuOpen, setMenuOpen] = useState(false);
     const [activeImage, setActiveImage] = useState(null);
+    const { dialogRef, onDialogKeyDown } = useAccessibleDialog(Boolean(activeImage));
     const activeIndex = project.gallery.findIndex((image) => image.src === activeImage?.src);
 
     useEffect(() => {
@@ -36,7 +39,7 @@ export default function LasBotasProjectPage({ onReturn }) {
     }, [activeImage, activeIndex]);
 
     const navigateHome = () => {
-        window.history.pushState({}, '', '/');
+        window.history.pushState({}, '', homePath);
         onReturn();
     };
 
@@ -104,7 +107,7 @@ export default function LasBotasProjectPage({ onReturn }) {
 
         <footer className="botas-footer"><div><p className="botas-eyebrow">NARRATIVA INTERACTIVA · PROYECTO 2</p><h2>Las botas<br /><em>viejas de papá.</em></h2><SocialLinks /></div><button className="botas-return" onClick={navigateHome}>Volver al portafolio <span aria-hidden="true">↗</span></button></footer>
 
-        {activeImage && <div className="botas-lightbox" role="dialog" aria-modal="true" aria-label={`Vista ampliada: ${activeImage.title}`} onClick={() => setActiveImage(null)}>
+        {activeImage && <div ref={dialogRef} className="botas-lightbox" role="dialog" aria-modal="true" aria-label={`Vista ampliada: ${activeImage.title}`} tabIndex={-1} onKeyDown={onDialogKeyDown} onClick={() => setActiveImage(null)}>
             <button className="botas-lightbox-close" onClick={() => setActiveImage(null)} aria-label="Cerrar imagen">×</button>
             <button className="botas-lightbox-arrow prev" onClick={(event) => { event.stopPropagation(); setActiveImage(project.gallery[(activeIndex - 1 + project.gallery.length) % project.gallery.length]); }} aria-label="Imagen anterior">‹</button>
             <figure onClick={(event) => event.stopPropagation()}><img src={activeImage.src} alt={activeImage.alt} /><figcaption>{activeImage.title}</figcaption></figure>

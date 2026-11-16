@@ -1,7 +1,9 @@
 import { Float } from '@react-three/drei';
 
 function Animated({ animated, children, floatIntensity = 1.1, rotationIntensity = 0.35, speed = 1.2 }) {
-    return <Float floatIntensity={floatIntensity} rotationIntensity={rotationIntensity} speed={animated ? speed : 0}>{children}</Float>;
+    return animated
+        ? <Float floatIntensity={floatIntensity} rotationIntensity={rotationIntensity} speed={speed}>{children}</Float>
+        : children;
 }
 
 function Pencil({ animated, color, position, rotation }) {

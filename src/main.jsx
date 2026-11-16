@@ -5,9 +5,10 @@ import ReactDOM from 'react-dom/client';
 
 import App from './App.jsx';
 import LasBotasProjectPage from './components/projects/las-botas-viejas-de-papa/LasBotasProjectPage';
+import { homePath, projectSlugFromPath } from './config/routes';
 
 function Root() {
-    const isLasBotasRoute = () => window.location.pathname.replace(/\/$/, '').endsWith('/projects/las-botas-viejas-de-papa');
+    const isLasBotasRoute = () => projectSlugFromPath() === 'las-botas-viejas-de-papa';
     const [showLasBotas, setShowLasBotas] = useState(isLasBotasRoute);
 
     useEffect(() => {
@@ -21,11 +22,18 @@ function Root() {
     }, []);
 
     useEffect(() => {
-        if (showLasBotas) document.title = 'Las botas viejas de papá — David Santiago Amaya';
+        if (!showLasBotas) return;
+
+        document.title = 'Las botas viejas de papá — David Santiago Amaya';
+        const heading = document.querySelector('.botas-page h1');
+        if (heading) {
+            heading.tabIndex = -1;
+            heading.focus({ preventScroll: true });
+        }
     }, [showLasBotas]);
 
     const returnToPortfolio = () => {
-        window.history.pushState({}, '', '/');
+        window.history.pushState({}, '', homePath);
         setShowLasBotas(false);
     };
 

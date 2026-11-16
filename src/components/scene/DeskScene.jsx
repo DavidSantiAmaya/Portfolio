@@ -23,7 +23,7 @@ export function DeskScene({ activeId, animationState, music, onSelect, onSelectP
                 {selectedProject && <ProjectWorkstation project={selectedProject} projectIndex={projectIndex} />}
                 {activeId === 'music' && <MusicStation music={music} />}
                 <StudioFurniture animated={animated} />
-                {Object.entries(sceneAssets).map(([id, asset]) => <ModelAsset asset={asset} key={id} onSelect={asset.interactionId ? () => {
+                {Object.entries(sceneAssets).map(([id, asset]) => <ModelAsset asset={asset} key={id} loadModel={id === 'desk' || asset.interactionId === activeId} onSelect={asset.interactionId ? () => {
                     onSelect(asset.interactionId);
                     if (asset.interactionId === 'music') music.play();
                 } : undefined} />)}

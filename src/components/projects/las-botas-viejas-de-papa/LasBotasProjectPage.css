@@ -158,3 +158,24 @@
     .botas-lightbox-arrow.next { right: 6px; }
     .botas-lightbox figure img { max-height: calc(100vh - 120px); }
 }
+
+@media (max-width: 620px) {
+    .botas-page p:not(.botas-eyebrow) { font-size: 16px; }
+    .botas-page button { min-height: 44px; min-width: 44px; }
+    .botas-menu-panel a, .botas-button, .botas-socials a { align-items: center; display: inline-flex; min-height: 44px; }
+    .botas-lightbox-arrow { height: 44px; min-height: 44px; min-width: 44px; width: 44px; }
+    .botas-wordmark { font-size: 12px !important; }
+    .botas-button, .botas-return, .botas-socials a { font-size: 14px !important; }
+    .botas-eyebrow, .botas-school small, .botas-cover figcaption, .botas-hero-note,
+    .botas-photo-caption, .botas-photo-caption b, .botas-final-image figcaption,
+    .botas-institution-note span, .botas-team li { font-size: 12px !important; }
+}
+
+.botas-page { --botas-coral-ink: #b23a11; }
+.botas-hero h1 em,
+.botas-section-title h2 em,
+.botas-result h2 em,
+.botas-lineart-details article > span,
+.botas-photo-caption i { color: var(--botas-coral-ink); }
+.botas-footer h2 em { color: #ffb199; }
+.botas-socials a:hover { background: var(--botas-coral-ink); color: #fff; }

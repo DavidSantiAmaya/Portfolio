@@ -1,6 +1,7 @@
 // Replace the copy and images below with David's final project information.
 // The data shape is reused by the 3D cards, paper portfolio and individual URLs.
 import { lasBotasProjectCard } from './lasBotasProject';
+import { createResponsiveCover } from './projectCoverAssets';
 
 export const projects = [
     {
@@ -14,7 +15,7 @@ export const projects = [
         concept: 'Pirate Ship Simulator recrea la superficie del océano y el comportamiento físico de un barco en navegación.',
         objective: 'Ofrecer una experiencia interactiva y tangible que integre simulación física avanzada con controles físicos reales.',
         tools: ['Unity', 'Arduino Uno', 'Blender'],
-        cover: `${import.meta.env.BASE_URL}pirate-ship-cover.jpeg`,
+        ...createResponsiveCover('pirate-ship-cover.jpeg', 'pirate-ship-cover', 'jpg'),
         contributions: [
             {
                 number: '01',
@@ -46,7 +47,7 @@ export const projects = [
             { section: 'Control físico', title: 'Montaje del prototipo 03', alt: 'Fotografía del montaje físico del proyecto, vista 3', src: `${import.meta.env.BASE_URL}pirate-ship-gallery/field-process-03.jpg` },
             { section: 'Presentación visual', title: 'Composición del proyecto', alt: 'Composición visual del proyecto Pirate Ship Simulator', src: `${import.meta.env.BASE_URL}pirate-ship-gallery/complete-project-mockup.png` },
             { section: 'Presentación visual', title: 'Aplicación de la interfaz', alt: 'Mockup de la interfaz del simulador', src: `${import.meta.env.BASE_URL}pirate-ship-gallery/interface-mockup.png` },
-            { section: 'Presentación visual', title: 'Portada del proyecto', alt: 'Portada de Pirate Ship Simulator con el barco navegando en el océano', src: `${import.meta.env.BASE_URL}pirate-ship-cover.jpeg` }
+            { section: 'Presentación visual', title: 'Portada del proyecto', alt: 'Portada de Pirate Ship Simulator con el barco navegando en el océano', src: `${import.meta.env.BASE_URL}models/pirate-ship-cover.jpeg` }
         ],
         repository: 'https://github.com/Alein0/Barco_Simulacion'
     },
@@ -62,7 +63,7 @@ export const projects = [
         year: 'Portafolio 2026',
         concept: 'Una narrativa web interactiva que acerca al público a la Batalla del Pantano de Vargas, librada el 25 de julio de 1819 en Paipa, Boyacá.',
         objective: 'Divulgar su valor histórico y cultural mediante una experiencia digital que combina investigación, texto, ilustración y navegación por capítulos.',
-        cover: `${import.meta.env.BASE_URL}batalla-pantano-vargas/portada.png`,
+        ...createResponsiveCover('batalla-pantano-vargas/portada.png', 'batalla-pantano-vargas', 'png'),
         coverContain: true,
         tools: ['React', 'TypeScript', 'Visual Studio Code'],
         contributions: [
@@ -131,7 +132,7 @@ export const projects = [
             document: `${import.meta.env.BASE_URL}gus-estuvo-aqui/portafolio-2026-gus-storyboard-animacion.pdf`
         },
         animationProcess: 'En Krita, se dibuja sobre los fotogramas de referencia y se comienza con una o dos poses clave para las expresiones cortas. Se agregan solo los intermedios imprescindibles, sin calcar cada cuadro. Cada toma se separa en un archivo .kra, se organizan las capas, se define la resolución al inicio y luego se revisa el ritmo en la línea de tiempo.',
-        cover: `${import.meta.env.BASE_URL}gus-estuvo-aqui/gus-estuvo-aqui-portada.jpg`,
+        ...createResponsiveCover('gus-estuvo-aqui/gus-estuvo-aqui-portada.jpg', 'gus-estuvo-aqui', 'jpg'),
         gallery: [
             { section: 'Universo y narrativa', title: 'Premisa y universo narrativo', alt: 'Lámina ilustrada con la premisa de Gus Estuvo Aquí y el universo ExoGenesis', src: `${import.meta.env.BASE_URL}gus-estuvo-aqui/premisa-y-universo.png` },
             { section: 'Personajes', title: 'Gus y exploraciones de diseño', alt: 'Diseño de Gus y exploraciones de sus expresiones y formas', src: `${import.meta.env.BASE_URL}gus-estuvo-aqui/gus-personajes.png` },
@@ -153,7 +154,7 @@ export const projects = [
         summary: 'En el silencioso mar de las almas, Caronte cumple su rutina eterna. Un misterioso paquete y un perrito travieso lo llevan a una aventura cómica rumbo a las puertas del inframundo.',
         author: 'David Santiago Amaya Reyes',
         role: 'Estudiante de Ingeniería Multimedia',
-        cover: `${import.meta.env.BASE_URL}caronte/portada.png`,
+        ...createResponsiveCover('caronte/portada.png', 'caronte', 'png'),
         coverContain: true,
         concept: 'En el silencioso mar de las almas, Caronte cumple su rutina eterna. Hasta que un misterioso paquete interrumpe su día. Dentro, un perrito travieso y lleno de vida pondrá a prueba la paciencia del barquero, llevándolos a ambos a una aventura cómica rumbo a las puertas del inframundo.',
         objective: 'Sin palabras, solo miradas, gestos y ladridos. El viaje transformará para siempre la soledad de Caronte.',
@@ -167,8 +168,8 @@ export const projects = [
             { title: 'Texturizado', src: `${import.meta.env.BASE_URL}caronte/isla-texturizado.png`, alt: 'Malla de la isla con texturas aplicadas en Blender' },
             { title: 'Render final con océano', src: `${import.meta.env.BASE_URL}caronte/isla-render-oceano.png`, alt: 'Render final de la isla con océano y muelle' }
         ],
-        animatic: `${import.meta.env.BASE_URL}caronte/animatic-caronte.mkv`,
-        finalVideo: `${import.meta.env.BASE_URL}caronte/caronte-final.mp4`,
+        animatic: `${import.meta.env.BASE_URL}caronte/animaticCaronte.mkv`,
+        finalVideo: `${import.meta.env.BASE_URL}caronte/Caronte%20Final.mp4`,
         gallery: [
             { section: 'Personajes · Caronte', title: 'Caronte · frontal', alt: 'Diseño frontal del personaje Caronte', src: `${import.meta.env.BASE_URL}caronte/caronte-personaje-frontal.png` },
             { section: 'Personajes · Caronte', title: 'Caronte · perfil', alt: 'Diseño de perfil del personaje Caronte', src: `${import.meta.env.BASE_URL}caronte/caronte-personaje-perfil.png` },

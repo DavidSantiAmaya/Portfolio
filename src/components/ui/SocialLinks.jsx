@@ -1,6 +1,8 @@
+export const contactUrl = 'https://www.linkedin.com/in/david-santiago-amaya-reyes/';
+
 const links = [
     { label: 'Instagram', href: 'https://www.instagram.com/santisketcha_studio/', type: 'instagram' },
-    { label: 'LinkedIn', href: 'https://www.linkedin.com/in/david-santiago-amaya-reyes/', type: 'linkedin' },
+    { label: 'LinkedIn', href: contactUrl, type: 'linkedin' },
     { label: 'Behance', href: 'https://www.behance.net/davidsamayar1', type: 'behance' }
 ];
 

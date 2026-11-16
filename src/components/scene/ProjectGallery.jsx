@@ -55,16 +55,41 @@ function useProjectTexture(project, index) {
 
 function GalleryCard({ index, onSelectProject, project }) {
     const [hovered, setHovered] = useState(false);
-    const texture = useProjectTexture(project, index);
     const layout = getPlacement(index);
     usePointerCursor(hovered);
 
-    return <group position={layout.position} rotation={layout.rotation} scale={hovered ? 1.045 : 1}><mesh position={[0, 0, -0.05]}><boxGeometry args={[cardSize[0] + 0.12, cardSize[1] + 0.12, 0.12]} /><meshStandardMaterial color="#4b2e83" metalness={0.05} roughness={0.82} /></mesh><mesh onClick={(event) => { event.stopPropagation(); onSelectProject(project); }} onPointerOut={() => setHovered(false)} onPointerOver={() => setHovered(true)} position={[0, 0, 0.02]}><planeGeometry args={cardSize} />{project.cover ? <ProjectCoverMaterial cover={project.cover} contain={project.coverContain} /> : <meshBasicMaterial map={texture} toneMapped={false} />}</mesh></group>;
+    return <group position={layout.position} rotation={layout.rotation} scale={hovered ? 1.045 : 1}><mesh position={[0, 0, -0.05]}><boxGeometry args={[cardSize[0] + 0.12, cardSize[1] + 0.12, 0.12]} /><meshStandardMaterial color="#4b2e83" metalness={0.05} roughness={0.82} /></mesh><mesh onClick={(event) => { event.stopPropagation(); onSelectProject(project); }} onPointerOut={() => setHovered(false)} onPointerOver={() => setHovered(true)} position={[0, 0, 0.02]}><planeGeometry args={cardSize} />{project.cover ? <ProjectCoverMaterial project={project} /> : <GeneratedCoverMaterial index={index} project={project} />}</mesh></group>;
 }
 
-function ProjectCoverMaterial({ contain = false, cover }) {
+function GeneratedCoverMaterial({ index, project }) {
+    const texture = useProjectTexture(project, index);
+    return <meshBasicMaterial map={texture} toneMapped={false} />;
+}
+
+function ProjectCoverMaterial({ project }) {
+    const [cover, setCover] = useState(() => {
+        const mobile = typeof window !== 'undefined' && window.matchMedia('(max-width: 768px), (pointer: coarse)').matches;
+        return mobile ? project.coverMobile || project.cover : project.coverDesktop || project.cover;
+    });
+    const contain = project.coverContain;
     const texture = useTexture(cover);
     texture.colorSpace = THREE.SRGBColorSpace;
+
+    useEffect(() => {
+        const preference = window.matchMedia('(max-width: 768px), (pointer: coarse)');
+        const updateCover = (event) => setCover(
+            event.matches ? project.coverMobile || project.cover : project.coverDesktop || project.cover
+        );
+
+        updateCover(preference);
+        if (preference.addEventListener) preference.addEventListener('change', updateCover);
+        else preference.addListener(updateCover);
+        return () => {
+            if (preference.removeEventListener) preference.removeEventListener('change', updateCover);
+            else preference.removeListener(updateCover);
+        };
+    }, [project.cover, project.coverDesktop, project.coverMobile]);
+
     const displayTexture = useMemo(() => {
         if (!contain) return texture;
         const image = texture.image;

@@ -1,3 +1,5 @@
+import { createResponsiveCover } from './projectCoverAssets';
+
 const base = `${import.meta.env.BASE_URL}las-botas-viejas-de-papa/`;
 
 export const lasBotasProjectCard = {
@@ -5,7 +7,7 @@ export const lasBotasProjectCard = {
     title: 'Las botas viejas de papá',
     category: 'Narrativa interactiva',
     summary: 'Un cómic digital que se lee bajando, se mueve cuando inclinas el teléfono y te deja elegir desde los ojos de quién vivirlo. Una historia llevada a una experiencia interactiva.',
-    cover: `${base}portada.png`,
+    ...createResponsiveCover('las-botas-viejas-de-papa/portada.png', 'las-botas-viejas-de-papa', 'png'),
     coverContain: true,
     tools: ['Guion', 'Storyboard', 'Sketch', 'Lineart', 'Color', 'Desarrollo']
 };
