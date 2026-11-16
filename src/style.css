@@ -1,5 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Anton&family=Bangers&display=swap');
-:root { --cream: #f5f5f0; --paper: #fffdf8; --ink: #26173d; --purple: #4b2e83; --orange: #ff6b35; --accent-text: var(--purple); --line: #4b2e8330; font-family: "Arial Narrow", "Trebuchet MS", Arial, sans-serif; color: var(--ink); background: var(--cream); font-synthesis: none; }
+:root { --cream: #f5f5f0; --paper: #fffdf8; --ink: #26173d; --purple: #4b2e83; --orange: #ff6b35; --orange-contrast-purple: #3b1f68; --accent-text: var(--purple); --line: #4b2e8330; font-family: "Arial Narrow", "Trebuchet MS", Arial, sans-serif; color: var(--ink); background: var(--cream); font-synthesis: none; }
 * { box-sizing: border-box; }
 html, body, #root, .experience { min-height: 100%; margin: 0; width: 100%; }
 body { background-color: var(--cream); background-image: linear-gradient(#4b2e8312 1px, transparent 1px), linear-gradient(90deg, #4b2e8312 1px, transparent 1px); background-size: 28px 28px; }
@@ -212,17 +212,17 @@ button { color: inherit; cursor: pointer; font: inherit; }
     .portfolio-reel { margin-bottom: 42px; padding: 22px; }
 }
 
-.artwork-swatch { background: var(--orange); color: #171717; }
-.intro-tag, .detail-sticker { background: var(--orange); color: #171717; }
-.detail-social .social-button:hover { background: var(--orange); border-color: var(--orange); color: #171717; }
+.artwork-swatch { background: var(--orange); color: var(--orange-contrast-purple); }
+.intro-tag, .detail-sticker { background: var(--orange); color: var(--orange-contrast-purple); }
+.detail-social .social-button:hover { background: var(--orange); border-color: var(--orange); color: var(--orange-contrast-purple); }
 .detail-social .behance-button { background: #fff; border-color: #171717; color: #171717; }
 .detail-social .behance-button:hover { background: #fff; border-color: #171717; color: #171717; }
-.card-index { background: var(--orange); border-color: #171717; color: #171717; }
-.project-card p { background: var(--orange); color: #171717; display: table; padding: .14rem .32rem; }
-.scene-project-panel > p { background: var(--orange); color: #171717; display: table; padding: .2rem .35rem; }
+.card-index { background: var(--orange); border-color: var(--orange-contrast-purple); color: var(--orange-contrast-purple); }
+.project-card p { background: var(--orange); color: var(--orange-contrast-purple); display: table; padding: .14rem .32rem; }
+.scene-project-panel > p { background: var(--orange); color: var(--orange-contrast-purple); display: table; padding: .2rem .35rem; }
 .scene-project-panel h3 { border-left: 4px solid var(--orange); color: var(--purple); padding-left: 8px; }
-.case-repository a { background: var(--orange); color: #171717; }
-.wordmark i { background: var(--orange); color: #171717; padding: 0 .08em; }
-.scribble-label { background: var(--orange); color: #171717; display: table; padding: .12em .2em; }
+.case-repository a { background: var(--orange); color: var(--orange-contrast-purple); }
+.wordmark i { background: var(--orange); color: var(--orange-contrast-purple); padding: 0 .08em; }
+.scribble-label { background: var(--orange); color: var(--orange-contrast-purple); display: table; padding: .12em .2em; }
 .scene-copy h1 em, .portfolio-intro h1 em, .about-card h2 em, .detail-footer h2 { text-decoration: underline; text-decoration-color: var(--orange); text-decoration-thickness: .1em; text-underline-offset: .08em; }
 .intro-scribble { text-decoration: underline; text-decoration-color: var(--orange); text-decoration-thickness: .08em; text-underline-offset: .08em; }
