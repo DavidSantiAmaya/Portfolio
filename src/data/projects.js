@@ -168,8 +168,8 @@ export const projects = [
             { title: 'Texturizado', src: `${import.meta.env.BASE_URL}caronte/isla-texturizado.png`, alt: 'Malla de la isla con texturas aplicadas en Blender' },
             { title: 'Render final con océano', src: `${import.meta.env.BASE_URL}caronte/isla-render-oceano.png`, alt: 'Render final de la isla con océano y muelle' }
         ],
-        animatic: `${import.meta.env.BASE_URL}caronte/animaticCaronte.mkv`,
-        finalVideo: `${import.meta.env.BASE_URL}caronte/Caronte%20Final.mp4`,
+        animatic: `${import.meta.env.BASE_URL}caronte/caronte-final.mp4`,
+        finalVideo: `${import.meta.env.BASE_URL}caronte/caronte-final.mp4`,
         gallery: [
             { section: 'Personajes · Caronte', title: 'Caronte · frontal', alt: 'Diseño frontal del personaje Caronte', src: `${import.meta.env.BASE_URL}caronte/caronte-personaje-frontal.png` },
             { section: 'Personajes · Caronte', title: 'Caronte · perfil', alt: 'Diseño de perfil del personaje Caronte', src: `${import.meta.env.BASE_URL}caronte/caronte-personaje-perfil.png` },
