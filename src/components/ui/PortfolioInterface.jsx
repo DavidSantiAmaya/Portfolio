@@ -46,7 +46,7 @@ function ObjectPanel({ interaction, onCloseInteraction, onOpenPortfolio }) {
 }
 
 function About() {
-    return <section className="about-card paper-sheet"><span className="intro-tag">SOBRE MÍ</span><h2>DAVID SANTIAGO<br /><em>AMAYA REYES</em></h2><p>Estudiante de Ingeniería Multimedia con formación en diseño gráfico, ilustración y desarrollo web. Apasionado por crear experiencias digitales innovadoras y funcionales. Experiencia en proyectos de branding, diseño de interfaces y desarrollo de aplicaciones web.</p><span className="about-stamp">DISEÑO<br />+ 3D<br />+ WEB</span></section>;
+    return <section className="about-card paper-sheet"><span className="intro-tag">SOBRE MÍ</span><h2>DAVID SANTIAGO<br /><em>AMAYA REYES</em></h2><p>Estudiante de Ingeniería Multimedia con formación en diseño gráfico, ilustración y desarrollo web. Apasionado por crear experiencias digitales innovadoras y funcionales. Experiencia en proyectos de branding, diseño de interfaces y desarrollo de aplicaciones web.</p><SocialLinks className="social-actions detail-social about-social-actions" /><span className="about-stamp">DISEÑO<br />+ 3D<br />+ WEB</span></section>;
 }
 
 function BattleProjectCaseStudy({ onCloseProject, onReturnToScene, project }) {
@@ -248,8 +248,21 @@ function TraditionalPortfolio({ onCloseProject, onOpenProject, onReturnToScene, 
                         <p>HOLA, SOY DAVID</p>
                         <h1>Ideas que<br /><em>hacen ruido.</em></h1>
                         <span>Diseño, ilustración, 3D y experiencias digitales. Explora mis proyectos y procesos.</span>
-                        <a className="primary-action" href="#proyectos">Ver proyectos</a>
+                        <div className="portfolio-intro-actions">
+                            <a className="primary-action" href="#proyectos">Ver proyectos</a>
+                            <a className="secondary-action" href="#demo-reel">Ver demo reel</a>
+                            <a className="secondary-action resume-action" download="Hoja-de-vida-David-Santiago-Amaya-Reyes.pdf" href={`${import.meta.env.BASE_URL}hoja-de-vida-david-santiago-amaya-reyes.pdf`}>Descargar hoja de vida (PDF)</a>
+                        </div>
                         <div className="intro-scribble">CREAR<br />SIN MIEDO</div>
+                    </section>
+                    <section aria-labelledby="demo-reel-title" className="portfolio-reel paper-sheet" id="demo-reel">
+                        <span className="intro-tag">MUESTRA AUDIOVISUAL</span>
+                        <h2 id="demo-reel-title">Demo reel</h2>
+                        <p>Una selección audiovisual de mi trabajo.</p>
+                        <video aria-label="Demo reel de David Santiago Amaya Reyes" controls playsInline preload="none">
+                            <source src={`${import.meta.env.BASE_URL}Vr_2Demoreel.mp4`} type="video/mp4" />
+                            Tu navegador no pudo reproducir el demo reel. <a download href={`${import.meta.env.BASE_URL}Vr_2Demoreel.mp4`}>Descargar el video MP4.</a>
+                        </video>
                     </section>
                     <ProjectList onOpenProject={onOpenProject} />
                     <About />

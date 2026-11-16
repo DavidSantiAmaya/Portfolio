@@ -188,3 +188,26 @@ button { color: inherit; cursor: pointer; font: inherit; }
         transition-duration: .01ms !important;
     }
 }
+
+/* High-contrast contact and portfolio actions, plus the added reel and CV. */
+.contact-link { background: var(--purple); border-color: var(--purple); color: var(--paper); }
+.portfolio-intro-actions { align-items: center; display: flex; flex-wrap: wrap; gap: 12px; margin-top: 1.2rem; position: relative; z-index: 1; }
+.portfolio-intro .primary-action,
+.portfolio-intro .secondary-action { align-items: center; border: 2px solid var(--purple); box-shadow: 4px 4px 0 var(--orange); display: inline-flex; font-size: .82rem; font-weight: 900; justify-content: center; margin-top: 0; min-height: 48px; padding: .7rem 1rem; text-decoration: none; text-transform: uppercase; }
+.portfolio-intro .primary-action { background: var(--purple); color: var(--paper); }
+.portfolio-intro .secondary-action { background: var(--paper); color: var(--purple); }
+.portfolio-intro .secondary-action:hover { background: var(--purple); color: var(--paper); }
+.portfolio-reel { margin: 0 auto 52px; max-width: 1000px; padding: clamp(22px, 4vw, 42px); transform: rotate(.35deg); }
+.portfolio-reel h2 { color: var(--purple); font-family: "Bangers", Impact, sans-serif; font-size: clamp(2.5rem, 5vw, 4rem); letter-spacing: .02em; margin: 1rem 0 .5rem; text-transform: uppercase; }
+.portfolio-reel p { color: #382a50; font-size: 1rem; line-height: 1.5; margin: 0 0 1.2rem; }
+.portfolio-reel video { aspect-ratio: 16 / 9; background: #17131f; border: 2px solid var(--purple); box-shadow: 6px 7px 0 var(--orange); display: block; height: auto; max-width: 100%; width: 100%; }
+.about-card { padding-bottom: 100px; }
+.about-card .detail-social { border: 0; display: flex; flex-wrap: wrap; gap: 8px; margin: 1rem 0 0; max-width: 360px; padding: 0; position: relative; z-index: 1; }
+.about-card .detail-social .social-button { flex: 1 1 130px; font-size: .78rem; min-height: 44px; min-width: 0; padding: 0 12px; }
+
+@media (max-width: 640px) {
+    .portfolio-intro-actions { align-items: stretch; flex-direction: column; }
+    .portfolio-intro-actions a { justify-content: center; width: 100%; }
+    .intro-scribble { bottom: auto; margin: 1.5rem 0 0 auto; position: relative; right: auto; width: max-content; }
+    .portfolio-reel { margin-bottom: 42px; padding: 22px; }
+}
