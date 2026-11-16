@@ -6,6 +6,6 @@ const socialLinks = [
 
 export default function SocialLinks() {
     return <nav className="botas-socials" aria-label="Redes y portafolios">
-        {socialLinks.map(([label, href, mark]) => <a key={label} href={href} target="_blank" rel="noopener noreferrer"><span aria-hidden="true">{mark}</span>{label}</a>)}
+        {socialLinks.map(([label, href, mark]) => <a className={label === 'Behance' ? 'behance-button' : undefined} key={label} href={href} target="_blank" rel="noopener noreferrer"><span aria-hidden="true">{mark}</span>{label}</a>)}
     </nav>;
 }

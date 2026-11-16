@@ -4,7 +4,7 @@
     --botas-paper: #f8f7f1;
     --botas-ink: #292431;
     --botas-purple: #4b3290;
-    --botas-coral: #ff6938;
+    --botas-coral: #ff6b35;
     --botas-green: #477c36;
     background-color: var(--botas-paper);
     background-image: linear-gradient(#4b329012 1px, transparent 1px), linear-gradient(90deg, #4b329012 1px, transparent 1px), linear-gradient(90deg, transparent 0 66px, #e8879e60 67px 68px, transparent 69px);
@@ -29,7 +29,7 @@
 .botas-eyebrow { color: var(--botas-purple); font-size: 10px; font-weight: 700; letter-spacing: .15em; line-height: 1.6; margin: 0 0 16px; text-transform: uppercase; }
 .botas-eyebrow span { background: var(--botas-green); color: #fff; display: inline-block; padding: 4px 8px; transform: rotate(-2deg); }
 .botas-hero h1, .botas-section-title h2, .botas-result h2, .botas-footer h2 { color: var(--botas-purple); font: 400 clamp(3.8rem, 8.5vw, 7.8rem)/.93 'Permanent Marker', cursive; letter-spacing: -.035em; margin: 0; text-transform: uppercase; }
-.botas-hero h1 em, .botas-section-title h2 em, .botas-result h2 em, .botas-footer h2 em { color: var(--botas-coral); font-style: normal; }
+.botas-hero h1 em, .botas-section-title h2 em, .botas-result h2 em, .botas-footer h2 em { color: var(--botas-coral-ink); font-style: normal; text-decoration: underline; text-decoration-color: var(--botas-coral); text-decoration-thickness: .1em; text-underline-offset: .08em; }
 .botas-subtitle { color: var(--botas-purple); font: 700 18px 'Kalam', cursive; margin: 23px 0 8px; }
 .botas-hero-description { color: #514d57; font-size: 15px; line-height: 1.75; margin: 8px 0 20px; max-width: 490px; }
 .botas-school { border-left: 4px solid var(--botas-green); display: grid; gap: 4px; margin: 21px 0; padding-left: 14px; }
@@ -74,7 +74,7 @@
 .botas-lineart .botas-section-title { margin: 0; }
 .botas-lineart-details { display: grid; gap: 16px; }
 .botas-lineart-details article { background: #fff; border-left: 4px solid var(--botas-green); padding: 20px 23px; }
-.botas-lineart-details article > span { color: var(--botas-coral); font-size: 10px; font-weight: 700; }
+.botas-lineart-details article > span { color: var(--botas-coral-ink); font-size: 10px; font-weight: 700; }
 .botas-lineart-details h3 { color: var(--botas-purple); font: 700 21px 'Kalam', cursive; margin: 7px 0; }
 .botas-lineart-details p { color: #514d57; font-size: 13px; line-height: 1.7; margin: 0; }
 .botas-comparison { background: #fff; border: 2px solid var(--botas-purple); box-shadow: 6px 7px 0 #477c3630; grid-column: 1/-1; margin: 0; padding: 9px; }
@@ -92,7 +92,7 @@
 .botas-photo-image img { height: 100%; object-fit: contain; width: 100%; }
 .botas-photo-caption { align-items: center; display: flex; font: 700 11px 'Kalam', cursive; gap: 8px; min-height: 42px; padding: 7px 3px 0; }
 .botas-photo-caption b { color: var(--botas-green); font: 700 9px 'DM Sans', sans-serif; }
-.botas-photo-caption i { color: var(--botas-coral); font: normal 17px 'DM Sans', sans-serif; margin-left: auto; }
+.botas-photo-caption i { color: var(--botas-ink); font: normal 17px 'DM Sans', sans-serif; margin-left: auto; }
 .botas-result { align-items: center; background: #eeedf0b8; display: grid; gap: 40px; grid-template-columns: 1fr .8fr; max-width: none; padding-left: max(25px, calc((100vw - 1096px)/2)); padding-right: max(25px, calc((100vw - 1096px)/2)); }
 .botas-result-copy > p:not(.botas-eyebrow) { color: #514d57; font-size: 15px; line-height: 1.8; margin: 18px 0 23px; max-width: 530px; }
 .botas-result-copy .botas-button { margin-top: 20px; }
@@ -113,7 +113,9 @@
 .botas-footer h2 em { color: #ff9974; }
 .botas-socials { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 27px; }
 .botas-socials a { align-items: center; background: var(--botas-green); border: 1px solid #fff; color: #fff; display: inline-flex; font-size: 11px; font-weight: 700; gap: 9px; justify-content: center; min-height: 48px; min-width: 145px; padding: 0 15px; text-decoration: none; text-transform: uppercase; }
-.botas-socials a:hover { background: var(--botas-coral); color: var(--botas-purple); }
+.botas-socials a:hover { background: var(--botas-coral); color: var(--botas-ink); }
+.botas-socials .behance-button { background: #fff; border-color: #171717; color: #171717; }
+.botas-socials .behance-button:hover { background: #fff; color: #171717; }
 .botas-socials a span { font-size: 15px; font-weight: 700; }
 .botas-return { background: var(--botas-green); border: 2px solid #fff; box-shadow: 4px 4px 0 #211a2c; color: #fff; cursor: pointer; font-size: 10px!important; font-weight: 700!important; letter-spacing: .08em; padding: 13px 16px; text-transform: uppercase; }
 .botas-return span { margin-left: 8px; }
@@ -171,11 +173,11 @@
     .botas-institution-note span, .botas-team li { font-size: 12px !important; }
 }
 
-.botas-page { --botas-coral-ink: #b23a11; }
+.botas-page { --botas-coral-ink: var(--botas-ink); }
 .botas-hero h1 em,
 .botas-section-title h2 em,
 .botas-result h2 em,
 .botas-lineart-details article > span,
 .botas-photo-caption i { color: var(--botas-coral-ink); }
 .botas-footer h2 em { color: #ffb199; }
-.botas-socials a:hover { background: var(--botas-coral-ink); color: #fff; }
+.botas-socials a:hover { background: var(--botas-coral); color: var(--botas-ink); }
