@@ -7,6 +7,8 @@ button { color: inherit; cursor: pointer; font: inherit; }
 :where(a, button, [tabindex]):focus-visible { outline: 3px solid var(--purple); outline-offset: 4px; box-shadow: 0 0 0 6px var(--paper); }
 .experience { min-height: 100vh; overflow: hidden; position: relative; }
 .experience canvas { height: 100vh !important; touch-action: none; }
+.scene-webgl-fallback { align-items: center; background: var(--paper); border: 2px solid var(--purple); box-shadow: 7px 8px 0 var(--purple); display: flex; flex-direction: column; gap: 12px; left: 50%; max-width: calc(100vw - 32px); padding: 20px; position: fixed; text-align: center; top: 50%; transform: translate(-50%, -50%); width: 360px; z-index: 10; }
+.scene-webgl-fallback p { color: var(--ink); font-size: 1rem; line-height: 1.5; margin: 0; }
 @media (pointer: coarse) {
     .experience canvas { touch-action: manipulation; }
 }
@@ -50,7 +52,7 @@ button { color: inherit; cursor: pointer; font: inherit; }
 .portfolio-intro > span { color: #382a50; display: block; font-size: 1rem; font-weight: 700; line-height: 1.5; max-width: 410px; }
 .intro-scribble { bottom: 48px; color: var(--orange-text); font-family: Impact, "Arial Black", sans-serif; font-size: 1.45rem; font-style: italic; line-height: .8; position: absolute; right: 48px; transform: rotate(-10deg); }
 .project-list { display: grid; gap: 25px; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); position: relative; z-index: 2; }
-.project-card { background: var(--paper); border: 2px solid var(--purple); box-shadow: 7px 8px 0 var(--purple); min-height: 310px; padding: 22px; position: relative; transition: transform .2s ease; }
+.project-card { background: var(--paper); border: 2px solid var(--purple); box-shadow: 7px 8px 0 var(--purple); display: flex; flex-direction: column; min-height: 310px; padding: 22px; position: relative; transition: transform .2s ease; }
 .project-card:hover { transform: rotate(1deg) translateY(-8px); }
 .project-card-1 { transform: rotate(-2deg); }.project-card-2 { transform: rotate(1.3deg); }.project-card-3 { transform: rotate(-.8deg); }
 .project-card-1:hover { transform: rotate(0deg) translateY(-8px); }.project-card-2:hover { transform: rotate(-.2deg) translateY(-8px); }.project-card-3:hover { transform: rotate(.4deg) translateY(-8px); }
@@ -59,7 +61,7 @@ button { color: inherit; cursor: pointer; font: inherit; }
 .project-card p { color: var(--orange-text); font-size: .65rem; font-weight: 900; letter-spacing: .13em; margin: 0 0 .5rem; text-transform: uppercase; }
 .project-card h3 { color: var(--purple); font-family: "Anton", Impact, "Arial Black", sans-serif; font-size: 2rem; font-style: italic; font-weight: 400; letter-spacing: -.015em; line-height: .9; margin: 0 0 .8rem; text-transform: uppercase; }
 .card-summary { color: #382a50; display: block; font-size: .84rem; line-height: 1.45; }
-.project-card button { background: var(--purple); border: 2px solid var(--purple); bottom: 17px; color: var(--paper); font-size: .67rem; font-weight: 900; left: 20px; letter-spacing: .04em; padding: .48rem .6rem; position: absolute; text-transform: uppercase; }
+.project-card button { align-self: flex-start; background: var(--purple); border: 2px solid var(--purple); color: var(--paper); font-size: .67rem; font-weight: 900; letter-spacing: .04em; margin-top: auto; padding: .48rem .6rem; position: static; text-transform: uppercase; }
 .project-card button b { font-size: 1rem; margin-left: .45rem; }
 .project-list-title { color: var(--purple); font-family: "Bangers", Impact, sans-serif; font-size: clamp(2rem, 4vw, 3rem); grid-column: 1 / -1; letter-spacing: .02em; margin: 0 0 .35rem; text-transform: uppercase; }
 .project-detail { margin: 20px auto; max-width: 900px; min-height: 620px; padding: 48px; position: relative; transform: rotate(.5deg); }

@@ -1,4 +1,5 @@
-const base = `${import.meta.env.BASE_URL}models/`;
+// Vite publishes public/models at the site root (see vite.config.js).
+const base = import.meta.env.BASE_URL;
 
 export function createResponsiveCover(filename, name, extension) {
     const mobile = `${base}responsive-covers/${name}-480.${extension}`;

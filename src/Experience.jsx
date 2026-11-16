@@ -11,11 +11,21 @@ import { getProjectBySlug } from './data/projects';
 
 const projectFromLocation = () => getProjectBySlug(projectSlugFromPath());
 
+function SceneCanvasFallback({ onOpenPortfolio }) {
+    return (
+        <div className="scene-webgl-fallback" role="status">
+            <p>La galería 3D no está disponible en este dispositivo.</p>
+            <button className="text-button" onClick={onOpenPortfolio}>Ver lista de proyectos</button>
+        </div>
+    );
+}
+
 export default function Experience() {
     const [selectedInteraction, setSelectedInteraction] = useState(null);
     const [showPortfolio, setShowPortfolio] = useState(Boolean(projectFromLocation()));
     const [project, setProject] = useState(projectFromLocation);
     const [sceneProject, setSceneProject] = useState(null);
+    const [canvasUnavailable, setCanvasUnavailable] = useState(false);
     const [isMobileCanvas, setIsMobileCanvas] = useState(() => (
         typeof window.matchMedia === 'function' && window.matchMedia('(max-width: 768px), (pointer: coarse)').matches
     ));
@@ -25,6 +35,7 @@ export default function Experience() {
             : 'running'
     ));
     const music = useMusicPlayer();
+    const openPortfolio = () => setShowPortfolio(true);
 
     useEffect(() => {
         const preference = window.matchMedia('(prefers-reduced-motion: reduce)');
@@ -109,9 +120,18 @@ export default function Experience() {
                 <Canvas
                     aria-hidden="true"
                     camera={{ fov: 38, near: 0.1, far: 100, position: [10, 7, 12] }}
-                    dpr={isMobileCanvas ? [1, 1.2] : [1, 1.5]}
-                    gl={{ antialias: true, powerPreference: 'high-performance' }}
-                    shadows
+                    dpr={isMobileCanvas ? 1 : [1, 1.5]}
+                    gl={{ antialias: !isMobileCanvas, powerPreference: isMobileCanvas ? 'low-power' : 'high-performance' }}
+                    shadows={!isMobileCanvas}
+                    fallback={<SceneCanvasFallback onOpenPortfolio={openPortfolio} />}
+                    onCreated={({ gl }) => {
+                        gl.domElement.addEventListener('webglcontextlost', (event) => {
+                            event.preventDefault();
+                            setCanvasUnavailable(true);
+                        });
+                        gl.domElement.addEventListener('webglcontextrestored', () => setCanvasUnavailable(false));
+                        setCanvasUnavailable(false);
+                    }}
                 >
                     <color attach="background" args={['#f5f5f0']} />
                     <Suspense fallback={null}>
@@ -127,11 +147,12 @@ export default function Experience() {
                     </Suspense>
                 </Canvas>
             )}
+            {!showPortfolio && canvasUnavailable && <SceneCanvasFallback onOpenPortfolio={openPortfolio} />}
             <PortfolioInterface
                 activeId={selectedInteraction}
                 music={music}
                 onCloseInteraction={() => { setSelectedInteraction(null); setSceneProject(null); }}
-                onOpenPortfolio={() => setShowPortfolio(true)}
+                onOpenPortfolio={openPortfolio}
                 onOpenProject={openProject}
                 onCloseProject={closeProject}
                 onReturnToScene={returnToScene}
